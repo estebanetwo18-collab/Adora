@@ -479,6 +479,15 @@ export function AgendaApp() {
           <span className="sync-dot" />
           <span>{sync === "saving" ? "Guardando…" : sync === "error" ? "Sin conexión" : "Conectado"}</span>
         </div>
+        <button
+          className="logout-btn"
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            window.location.href = "/login";
+          }}
+        >
+          Cerrar sesión
+        </button>
       </div>
 
       <div className="body">

@@ -332,6 +332,24 @@
   color:var(--ink-soft); font-style:italic; font-family:var(--font-fraunces),serif; font-size:15px;
 }
 
+.adora-agenda .login-page{
+  min-height:calc(100vh - 68px); display:flex; align-items:center; justify-content:center; padding:24px 0;
+}
+.adora-agenda .login-card{width:100%; max-width:360px;}
+.adora-agenda .login-brand{display:flex; flex-direction:column; align-items:center; gap:6px; margin-bottom:20px;}
+.adora-agenda .login-brand .brand-mark{width:52px; height:52px; font-size:26px;}
+.adora-agenda .login-brand .name{font-size:26px;}
+.adora-agenda .login-error{
+  background:var(--accent-soft); color:var(--danger); border-radius:9px; padding:9px 12px;
+  font-size:12.5px; margin-bottom:13px;
+}
+.adora-agenda .logout-btn{
+  border:1px solid rgba(246,214,232,.28); background:transparent; color:var(--brand-pink);
+  border-radius:9px; padding:7px 13px; font-family:var(--font-manrope),sans-serif; font-weight:600;
+  font-size:12.5px; cursor:pointer;
+}
+.adora-agenda .logout-btn:hover{background:rgba(246,214,232,.1);}
+
 @media (max-width:760px){
   .adora-agenda .body{flex-direction:column;}
   .adora-agenda .sidebar{width:100%; flex-direction:row; flex-wrap:wrap;}
