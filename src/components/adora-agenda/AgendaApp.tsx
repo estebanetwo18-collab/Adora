@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AgendaState, Appointment, Client, ServiceType, StaffMember } from "@/lib/adora-agenda/types";
 
-const DOW = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const DOW = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+const WEEK_LEN = 7;
 const MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"];
 const START_HOUR = 9;
 const END_HOUR = 19;
@@ -33,12 +34,12 @@ function mondayOf(d: Date): Date {
 }
 function formatRangeLabel(weekStart: Date): string {
   const d0 = weekStart;
-  const d5 = addDays(weekStart, 5);
-  const y = d5.getFullYear();
-  if (d0.getMonth() === d5.getMonth()) {
-    return `${d0.getDate()}–${d5.getDate()} ${MONTHS_ES[d5.getMonth()]} ${y}`;
+  const d6 = addDays(weekStart, 6);
+  const y = d6.getFullYear();
+  if (d0.getMonth() === d6.getMonth()) {
+    return `${d0.getDate()}–${d6.getDate()} ${MONTHS_ES[d6.getMonth()]} ${y}`;
   }
-  return `${d0.getDate()} ${MONTHS_ES[d0.getMonth()]} – ${d5.getDate()} ${MONTHS_ES[d5.getMonth()]} ${y}`;
+  return `${d0.getDate()} ${MONTHS_ES[d0.getMonth()]} – ${d6.getDate()} ${MONTHS_ES[d6.getMonth()]} ${y}`;
 }
 function timeToMinutes(t: string): number {
   const [h, m] = t.split(":").map(Number);
@@ -53,7 +54,7 @@ function cellForDate(key: string): { dayIndex: number; weekStart: Date } {
   const d = parseDateKey(key);
   const ws = mondayOf(d);
   const dayIndex = Math.round((d.getTime() - ws.getTime()) / 86400000);
-  return { dayIndex: Math.min(Math.max(dayIndex, 0), 5), weekStart: ws };
+  return { dayIndex: Math.min(Math.max(dayIndex, 0), WEEK_LEN - 1), weekStart: ws };
 }
 function monthGridDays(anchor: Date): Date[] {
   const first = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
@@ -65,8 +66,11 @@ const HOUR_OPTIONS = (() => {
   for (let m = START_HOUR * 60; m < END_HOUR * 60; m += 30) opts.push(minutesToTime(m));
   return opts;
 })();
-const DURATION_OPTIONS = [30, 60, 90, 120];
+const DURATION_OPTIONS = [30, 60, 90, 120, 150, 180, 240, 480];
 const FALLBACK_COLOR = "#9B8B85";
+function formatColones(n: number): string {
+  return `₡${n.toLocaleString("es-CR")}`;
+}
 
 type SyncStatus = "loading" | "ready" | "saving" | "error";
 
@@ -271,12 +275,14 @@ export function AgendaApp() {
   const [sfName, setSfName] = useState("");
   const [sfRole, setSfRole] = useState("");
   const [sfInitials, setSfInitials] = useState("");
+  const [sfPhotoUrl, setSfPhotoUrl] = useState("");
 
   function openStaffModal(s?: StaffMember) {
     setEditingStaffId(s ? s.id : null);
     setSfName(s ? s.name : "");
     setSfRole(s ? s.role : "");
     setSfInitials(s ? s.initials : "");
+    setSfPhotoUrl(s ? s.photoUrl : "");
     setStaffOpen(true);
   }
   function closeStaffModal() {
@@ -285,7 +291,7 @@ export function AgendaApp() {
   }
   async function saveStaff() {
     if (!sfName.trim()) return;
-    const payload = { name: sfName.trim(), role: sfRole.trim(), initials: sfInitials.trim() };
+    const payload = { name: sfName.trim(), role: sfRole.trim(), initials: sfInitials.trim(), photoUrl: sfPhotoUrl.trim() };
     const wasEditing = Boolean(editingStaffId);
     const ok = await applyMutation(
       () =>
@@ -306,12 +312,16 @@ export function AgendaApp() {
   const [serviceOpen, setServiceOpen] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
   const [svLabel, setSvLabel] = useState("");
-  const [svColor, setSvColor] = useState("#C1527A");
+  const [svCategory, setSvCategory] = useState("");
+  const [svPrice, setSvPrice] = useState("");
+  const [svColor, setSvColor] = useState("#C98999");
 
   function openServiceModal(s?: ServiceType) {
     setEditingServiceId(s ? s.id : null);
     setSvLabel(s ? s.label : "");
-    setSvColor(s ? s.color : "#C1527A");
+    setSvCategory(s ? s.category : "");
+    setSvPrice(s ? String(s.price) : "");
+    setSvColor(s ? s.color : "#C98999");
     setServiceOpen(true);
   }
   function closeServiceModal() {
@@ -320,7 +330,12 @@ export function AgendaApp() {
   }
   async function saveService() {
     if (!svLabel.trim()) return;
-    const payload = { label: svLabel.trim(), color: svColor };
+    const payload = {
+      label: svLabel.trim(),
+      category: svCategory.trim(),
+      price: Math.max(0, Math.round(Number(svPrice) || 0)),
+      color: svColor,
+    };
     const wasEditing = Boolean(editingServiceId);
     const ok = await applyMutation(
       () =>
@@ -399,6 +414,22 @@ export function AgendaApp() {
     return m;
   }, [state]);
 
+  const servicesByCategory = useMemo(() => {
+    const groups: { category: string; services: ServiceType[] }[] = [];
+    const index = new Map<string, ServiceType[]>();
+    (state?.services || []).forEach((s) => {
+      const key = s.category || "Otros";
+      let list = index.get(key);
+      if (!list) {
+        list = [];
+        index.set(key, list);
+        groups.push({ category: key, services: list });
+      }
+      list.push(s);
+    });
+    return groups;
+  }, [state]);
+
   const clientById = useMemo(() => {
     const m = new Map<string, Client>();
     state?.clients.forEach((c) => m.set(c.id, c));
@@ -448,11 +479,9 @@ export function AgendaApp() {
     <div className="app">
       <div className="topbar">
         <div className="brand">
-          <div className="brand-mark">A</div>
-          <div className="brand-text">
-            <span className="name">Adora</span>
-            <span className="sub">Agenda · Nail Salon</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element -- static brand asset served as-is from /public, no optimization needed */}
+          <img src="/logo-adora.jpg" alt="Adora Nail Salon" className="brand-logo" />
+          <span className="brand-tagline">Agenda</span>
         </div>
         <div className="nav-group">
           <button className="today-btn" onClick={() => setWeekStart(mondayOf(new Date()))}>
@@ -530,12 +559,22 @@ export function AgendaApp() {
           <div className="card">
             <h3>Servicios</h3>
             {state.services.length === 0 && <div className="empty-list">Sin servicios todavía.</div>}
-            {state.services.map((s) => (
-              <button key={s.id} type="button" className="list-row-btn" onClick={() => openServiceModal(s)}>
-                <span className="legend-dot" style={{ background: s.color }} />
-                <span className="row-title">{s.label}</span>
-              </button>
-            ))}
+            <div style={{ maxHeight: 320, overflowY: "auto" }}>
+              {servicesByCategory.map((group) => (
+                <div key={group.category} style={{ marginBottom: 10 }}>
+                  <div className="service-category-label">{group.category}</div>
+                  {group.services.map((s) => (
+                    <button key={s.id} type="button" className="list-row-btn" onClick={() => openServiceModal(s)}>
+                      <span className="legend-dot" style={{ background: s.color }} />
+                      <span className="service-row-text">
+                        <span className="row-title">{s.label}</span>
+                        <span className="service-price">{formatColones(s.price)}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
             <button className="add-row-btn" onClick={() => openServiceModal()}>
               + Agregar servicio
             </button>
@@ -546,7 +585,12 @@ export function AgendaApp() {
             {state.staff.length === 0 && <div className="empty-list">Sin integrantes todavía.</div>}
             {state.staff.map((s) => (
               <button key={s.id} type="button" className="list-row-btn" onClick={() => openStaffModal(s)}>
-                <span className="avatar">{(s.initials || "?").toUpperCase()}</span>
+                {s.photoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- staff photos are arbitrary external URLs, not local/optimizable assets
+                  <img className="avatar avatar-photo" src={s.photoUrl} alt="" />
+                ) : (
+                  <span className="avatar">{(s.initials || "?").toUpperCase()}</span>
+                )}
                 <span>
                   <span className="row-title">{s.name}</span> · {s.role}
                 </span>
@@ -599,7 +643,7 @@ export function AgendaApp() {
             <div className="grid-inner">
               <div className="day-header-row">
                 <div />
-                {Array.from({ length: 6 }, (_, i) => {
+                {Array.from({ length: WEEK_LEN }, (_, i) => {
                   const d = addDays(weekStart, i);
                   const isToday = dateKey(d) === todayKey;
                   return (
@@ -618,7 +662,7 @@ export function AgendaApp() {
                     </div>
                   ))}
                 </div>
-                {Array.from({ length: 6 }, (_, i) => {
+                {Array.from({ length: WEEK_LEN }, (_, i) => {
                   const d = addDays(weekStart, i);
                   const key = dateKey(d);
                   const isToday = key === todayKey;
@@ -661,7 +705,7 @@ export function AgendaApp() {
       <div className={`overlay ${apptOpen ? "open" : ""}`} onClick={(e) => e.target === e.currentTarget && closeApptModal()}>
         <div className="modal">
           <h2>{editingApptId ? "Editar cita" : "Nueva cita"}</h2>
-          <div className="hint">Se agenda dentro del horario 9:00–19:00, Lunes a Sábado.</div>
+          <div className="hint">Se agenda dentro del horario 9:00–19:00.</div>
 
           <div className="field">
             <label>Cliente</label>
@@ -743,7 +787,7 @@ export function AgendaApp() {
             <div className="field">
               <label>Día</label>
               <select value={apptDayIdx} onChange={(e) => setApptDayIdx(Number(e.target.value))}>
-                {Array.from({ length: 6 }, (_, i) => {
+                {Array.from({ length: 7 }, (_, i) => {
                   const d = addDays(weekStart, i);
                   return (
                     <option key={i} value={i}>
@@ -756,10 +800,14 @@ export function AgendaApp() {
             <div className="field">
               <label>Servicio</label>
               <select value={apptService} onChange={(e) => setApptService(e.target.value)}>
-                {state.services.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.label}
-                  </option>
+                {servicesByCategory.map((group) => (
+                  <optgroup key={group.category} label={group.category}>
+                    {group.services.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.label} — {formatColones(s.price)}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
             </div>
@@ -780,7 +828,7 @@ export function AgendaApp() {
               <select value={apptDuration} onChange={(e) => setApptDuration(Number(e.target.value))}>
                 {DURATION_OPTIONS.map((m) => (
                   <option key={m} value={m}>
-                    {m === 60 ? "1 h" : m === 120 ? "2 h" : m === 90 ? "1 h 30" : `${m} min`}
+                    {m % 60 === 0 ? `${m / 60} h` : m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${m % 60}`}
                   </option>
                 ))}
               </select>
@@ -826,6 +874,19 @@ export function AgendaApp() {
               <input type="text" maxLength={2} placeholder="ej. CA" value={sfInitials} onChange={(e) => setSfInitials(e.target.value)} />
             </div>
           </div>
+          <div className="field">
+            <label>Foto (URL, opcional)</label>
+            <input
+              type="text"
+              placeholder="https://…"
+              value={sfPhotoUrl}
+              onChange={(e) => setSfPhotoUrl(e.target.value)}
+            />
+            {sfPhotoUrl && (
+              // eslint-disable-next-line @next/next/no-img-element -- arbitrary external URL, not a local/optimizable asset
+              <img src={sfPhotoUrl} alt="" className="staff-photo-preview" />
+            )}
+          </div>
           <div className="modal-actions">
             {editingStaffId && (
               <button className="btn-danger" onClick={deleteStaff} disabled={sync === "saving"}>
@@ -846,16 +907,42 @@ export function AgendaApp() {
       <div className={`overlay ${serviceOpen ? "open" : ""}`} onClick={(e) => e.target === e.currentTarget && closeServiceModal()}>
         <div className="modal">
           <h2>{editingServiceId ? "Editar servicio" : "Nuevo servicio"}</h2>
-          <div className="hint">El color se usa para identificarlo en la grilla y la leyenda.</div>
+          <div className="hint">El color se comparte entre todos los servicios de la misma categoría.</div>
+          <div className="field">
+            <label>Nombre</label>
+            <input type="text" value={svLabel} onChange={(e) => setSvLabel(e.target.value)} />
+          </div>
           <div className="row2">
             <div className="field">
-              <label>Nombre</label>
-              <input type="text" value={svLabel} onChange={(e) => setSvLabel(e.target.value)} />
+              <label>Categoría</label>
+              <input
+                type="text"
+                list="service-categories"
+                placeholder="ej. Manicure"
+                value={svCategory}
+                onChange={(e) => setSvCategory(e.target.value)}
+              />
+              <datalist id="service-categories">
+                {servicesByCategory.map((g) => (
+                  <option key={g.category} value={g.category} />
+                ))}
+              </datalist>
             </div>
             <div className="field">
-              <label>Color</label>
-              <input type="color" value={svColor} onChange={(e) => setSvColor(e.target.value)} />
+              <label>Precio (₡)</label>
+              <input
+                type="number"
+                min={0}
+                step={500}
+                inputMode="numeric"
+                value={svPrice}
+                onChange={(e) => setSvPrice(e.target.value)}
+              />
             </div>
+          </div>
+          <div className="field">
+            <label>Color</label>
+            <input type="color" value={svColor} onChange={(e) => setSvColor(e.target.value)} />
           </div>
           <div className="modal-actions">
             {editingServiceId && (
@@ -911,6 +998,7 @@ export function AgendaApp() {
                         <span className="legend-dot" style={{ background: svc?.color || FALLBACK_COLOR, flex: "none" }} />
                         <span style={{ fontSize: 12.5 }}>
                           {a.date} · {a.time} · {svc?.label || a.service}
+                          {svc && svc.price > 0 ? ` · ${formatColones(svc.price)}` : ""}
                         </span>
                       </div>
                     );

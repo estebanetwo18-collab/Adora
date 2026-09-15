@@ -23,11 +23,14 @@ export type StaffMember = {
   name: string;
   role: string;
   initials: string;
+  photoUrl: string; // optional; falls back to initials when empty
 };
 
 export type ServiceType = {
   id: string;
   label: string;
+  category: string;
+  price: number; // colones
   color: string; // hex
 };
 

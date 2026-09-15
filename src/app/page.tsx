@@ -1,20 +1,34 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Bodoni_Moda, Quicksand, Lilita_One, Montserrat } from "next/font/google";
 import { AgendaApp } from "@/components/adora-agenda/AgendaApp";
 import "./agenda.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const bodoniModa = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
   style: ["normal", "italic"],
   weight: ["500", "600", "700"],
   display: "swap",
 });
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
+const lilitaOne = Lilita_One({
+  variable: "--font-lilita",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -26,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function AdoraAgendaPage() {
   return (
-    <div className={`adora-agenda ${fraunces.variable} ${manrope.variable}`}>
+    <div className={`adora-agenda ${bodoniModa.variable} ${quicksand.variable} ${lilitaOne.variable} ${montserrat.variable}`}>
       <AgendaApp />
     </div>
   );

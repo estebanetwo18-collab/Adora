@@ -17,44 +17,79 @@ function client(
   return { id, name, phone, email: "", notes, createdAt: now, updatedAt: now };
 }
 
+// Clientas reales de la semana (de la agenda de Google Calendar de Adora).
+// Sin teléfono/notas inventados — se completan desde la agenda real.
 const SEED_CLIENTS: Client[] = [
-  client("cli-maria-fernanda", "María Fernanda", "8811-0234"),
-  client("cli-camila-rojas", "Camila Rojas", "8822-1145"),
-  client("cli-isabel-duarte", "Isabel Duarte", "8833-2256"),
-  client("cli-valentina-cruz", "Valentina Cruz", "8844-3367"),
-  client("cli-sofia-mendoza", "Sofía Mendoza", "8855-4478"),
-  client("cli-renata-ibarra", "Renata Ibarra", "8866-5589"),
-  client("cli-daniela-ponce", "Daniela Ponce", "8877-6690"),
-  client("cli-lucia-herrera", "Lucía Herrera", "8888-7701"),
-  client("cli-antonella-vidal", "Antonella Vidal", "8899-8812"),
-  client("cli-constanza-ruiz", "Constanza Ruiz", "8811-9923"),
-  client("cli-josefina-salas", "Josefina Salas", "8822-0134"),
-  client("cli-trinidad-soto", "Trinidad Soto", "8833-1245"),
-  client("cli-florencia-araya", "Florencia Araya", "8844-2356"),
-  client("cli-martina-bravo", "Martina Bravo", "8855-3467"),
-  client("cli-emilia-torres", "Emilia Torres", "8866-4578"),
-  client("cli-catalina-munoz", "Catalina Muñoz", "8877-5689"),
-  client("cli-amanda-rios", "Amanda Rios", "8888-6790"),
-  client("cli-paz-contreras", "Paz Contreras", "8899-7801"),
-  client("cli-javiera-leiva", "Javiera Leiva", "8811-8912"),
-  client("cli-fernanda-castro", "Fernanda Castro", "8822-9023"),
-  client("cli-antonia-reyes", "Antonia Reyes", "8833-0134"),
-  client("cli-rocio-vargas", "Rocío Vargas", "8844-1245"),
-  client("cli-camila-soto", "Camila Soto", "8855-2356"),
+  client("cli-karina-guadamuz", "Karina Guadamuz", ""),
+  client("cli-catalina-saez", "Catalina Saez", ""),
+  client("cli-mami", "Mami", ""),
+  client("cli-mari-muniz", "Mari Muñiz", ""),
+  client("cli-daniela-reyes", "Daniela Reyes", ""),
+  client("cli-mariel-calvo", "Mariel Calvo", ""),
+  client("cli-jimena-ovideo", "Jimena Ovideo", ""),
+  client("cli-cristina-solano", "Cristina Solano", ""),
+  client("cli-alessia-carvajal", "Alessia Carvajal", ""),
+  client("cli-elena-murillo", "Elena Murillo", ""),
+  client("cli-valeria-garcia", "Valeria Garcia", ""),
+  client("cli-majo-salinas", "Majo Salinas", ""),
+  client("cli-winny-ramirez", "Winny Ramirez", ""),
+  client("cli-fransey-duran", "Fransey Duran", ""),
+  client("cli-nicole-araya", "Nicole Araya", ""),
+  // No es una clienta: representa horarios bloqueados (almuerzo, feriados).
+  client("cli-interno", "— Bloqueo interno —", ""),
 ];
 
+// Precios y servicios reales de Adora (guía visual de marca). Un color por
+// categoría, no por servicio individual — con 22 servicios, un color cada
+// uno haría la grilla ilegible; agrupados por categoría se lee de un vistazo.
+const CAT_PEDICURE = "Pedicure";
+const CAT_MANICURE = "Manicure";
+const CAT_CEJAS = "Cejas y Pestañas";
+const CAT_INTERNO = "Interno";
+const COLOR_PEDICURE = "#8A4D57"; // rosa vino
+const COLOR_MANICURE = "#C98999"; // rosa mauve
+const COLOR_CEJAS = "#B98A54"; // dorado cálido, tercer acento de la familia
+const COLOR_INTERNO = "#9B8B85"; // gris neutro — bloqueos, no servicios cobrables
+
+function svc(id: string, label: string, category: string, price: number, color: string): ServiceType {
+  return { id, label, category, price, color };
+}
+
 const SEED_SERVICES: ServiceType[] = [
-  { id: "manicure", label: "Manicure clásica", color: "#E38FB3" },
-  { id: "gel", label: "Manicure gel", color: "#C1527A" },
-  { id: "pedicure", label: "Pedicura spa", color: "#C98A62" },
-  { id: "acrylic", label: "Uñas acrílicas", color: "#9B6FA8" },
-  { id: "nailart", label: "Nail art", color: "#5E8F8A" },
+  // Pedicure
+  svc("ped-esmaltado", "Esmaltado semipermanente", CAT_PEDICURE, 12000, COLOR_PEDICURE),
+  svc("ped-seco", "Pedi en seco", CAT_PEDICURE, 18000, COLOR_PEDICURE),
+  svc("ped-jelly", "Jelly Spa", CAT_PEDICURE, 25000, COLOR_PEDICURE),
+  svc("ped-spa", "Pedi Spa", CAT_PEDICURE, 22000, COLOR_PEDICURE),
+  svc("ped-retiro", "Retiro de otro salón (pedicure)", CAT_PEDICURE, 3500, COLOR_PEDICURE),
+  // Manicure
+  svc("man-builder-sencillo", "Builder Gel diseño sencillo", CAT_MANICURE, 18000, COLOR_MANICURE),
+  svc("man-builder-basico", "Builder Gel diseño básico", CAT_MANICURE, 20000, COLOR_MANICURE),
+  svc("man-builder-elaborado", "Builder Gel diseño elaborado", CAT_MANICURE, 22000, COLOR_MANICURE),
+  svc("man-gelx-elaborado", "Gel X diseño elaborado", CAT_MANICURE, 24000, COLOR_MANICURE),
+  svc("man-gelx-basico", "Gel X diseño básico", CAT_MANICURE, 22000, COLOR_MANICURE),
+  svc("man-gelx-sencillo", "Gel X sencillo", CAT_MANICURE, 20000, COLOR_MANICURE),
+  svc("man-polygel", "Polygel", CAT_MANICURE, 22000, COLOR_MANICURE),
+  svc("man-luminary-sencillo", "Luminary diseño sencillo", CAT_MANICURE, 17000, COLOR_MANICURE),
+  svc("man-luminary-basico", "Luminary diseño básico", CAT_MANICURE, 19000, COLOR_MANICURE),
+  svc("man-luminary-elaborado", "Luminary diseño elaborado", CAT_MANICURE, 21000, COLOR_MANICURE),
+  svc("man-spa", "Manicure Spa", CAT_MANICURE, 10000, COLOR_MANICURE),
+  svc("man-retiro", "Retiro de otro salón (manicure)", CAT_MANICURE, 3500, COLOR_MANICURE),
+  // Cejas y pestañas
+  svc("cej-bigote", "Depilación de bigote", CAT_CEJAS, 5000, COLOR_CEJAS),
+  svc("cej-cejas", "Depilación de cejas", CAT_CEJAS, 12000, COLOR_CEJAS),
+  svc("cej-lifting", "Lifting de cejas (+ diseño + tinte + depilación)", CAT_CEJAS, 18000, COLOR_CEJAS),
+  svc("pes-lifting", "Lifting de pestañas", CAT_CEJAS, 25000, COLOR_CEJAS),
+  svc("pes-lifting-koreano", "Lifting de pestañas koreano", CAT_CEJAS, 28000, COLOR_CEJAS),
+  // Interno: bloquea horario en la grilla, no es un servicio cobrable
+  svc("int-almuerzo", "Almuerzo", CAT_INTERNO, 0, COLOR_INTERNO),
+  svc("int-feriado", "Día libre / feriado", CAT_INTERNO, 0, COLOR_INTERNO),
 ];
 
 const SEED_STAFF: StaffMember[] = [
-  { id: "staff-camila", name: "Camila", role: "manicurista", initials: "CA" },
-  { id: "staff-rocio", name: "Rocio", role: "nail art", initials: "RG" },
-  { id: "staff-paula", name: "Paula", role: "spa & pedicura", initials: "PM" },
+  { id: "staff-camila", name: "Camila", role: "manicurista", initials: "CA", photoUrl: "" },
+  { id: "staff-rocio", name: "Rocio", role: "nail art", initials: "RG", photoUrl: "" },
+  { id: "staff-paula", name: "Paula", role: "spa & pedicura", initials: "PM", photoUrl: "" },
 ];
 
 function appt(
@@ -64,10 +99,14 @@ function appt(
   duration: number,
   clientId: string,
   service: string,
+  notes = "",
 ): Appointment {
-  return { id, date, time, duration, clientId, service, notes: "" };
+  return { id, date, time, duration, clientId, service, notes };
 }
 
+// Semana real tomada de la agenda de Google Calendar de Adora. "Almuerzo" y
+// el feriado usan la clienta sintética cli-interno — no son citas cobrables,
+// son bloqueos de horario (hasta que haya una función dedicada para eso).
 function seedAppointmentsForWeek(mondayIso: string): Appointment[] {
   const d = (offsetDays: number) => {
     const base = new Date(mondayIso + "T00:00:00");
@@ -75,29 +114,34 @@ function seedAppointmentsForWeek(mondayIso: string): Appointment[] {
     return base.toISOString().slice(0, 10);
   };
   return [
-    appt("seed-lun-1", d(0), "09:30", 60, "cli-maria-fernanda", "gel"),
-    appt("seed-lun-2", d(0), "11:00", 60, "cli-camila-rojas", "acrylic"),
-    appt("seed-lun-3", d(0), "15:00", 60, "cli-isabel-duarte", "pedicure"),
-    appt("seed-mar-1", d(1), "10:00", 90, "cli-valentina-cruz", "acrylic"),
-    appt("seed-mar-2", d(1), "13:00", 60, "cli-sofia-mendoza", "manicure"),
-    appt("seed-mar-3", d(1), "17:00", 60, "cli-renata-ibarra", "gel"),
-    appt("seed-mie-1", d(2), "09:00", 60, "cli-daniela-ponce", "pedicure"),
-    appt("seed-mie-2", d(2), "12:00", 60, "cli-lucia-herrera", "nailart"),
-    appt("seed-mie-3", d(2), "16:30", 60, "cli-antonella-vidal", "gel"),
-    appt("seed-jue-1", d(3), "11:00", 90, "cli-constanza-ruiz", "acrylic"),
-    appt("seed-jue-2", d(3), "14:00", 60, "cli-josefina-salas", "manicure"),
-    appt("seed-jue-3", d(3), "18:00", 60, "cli-trinidad-soto", "pedicure"),
-    appt("seed-vie-1", d(4), "09:30", 60, "cli-florencia-araya", "manicure"),
-    appt("seed-vie-2", d(4), "10:30", 60, "cli-martina-bravo", "gel"),
-    appt("seed-vie-3", d(4), "12:00", 90, "cli-emilia-torres", "nailart"),
-    appt("seed-vie-4", d(4), "15:00", 60, "cli-catalina-munoz", "manicure"),
-    appt("seed-vie-5", d(4), "16:30", 60, "cli-amanda-rios", "gel"),
-    appt("seed-vie-6", d(4), "18:00", 60, "cli-paz-contreras", "pedicure"),
-    appt("seed-sab-1", d(5), "09:00", 60, "cli-javiera-leiva", "gel"),
-    appt("seed-sab-2", d(5), "10:00", 60, "cli-fernanda-castro", "manicure"),
-    appt("seed-sab-3", d(5), "11:30", 90, "cli-antonia-reyes", "nailart"),
-    appt("seed-sab-4", d(5), "14:00", 60, "cli-rocio-vargas", "acrylic"),
-    appt("seed-sab-5", d(5), "15:30", 60, "cli-camila-soto", "pedicure"),
+    // Lunes
+    appt("seed-lun-1", d(0), "09:00", 120, "cli-karina-guadamuz", "man-gelx-sencillo", "Gel X + retiro"),
+    appt("seed-lun-almuerzo", d(0), "11:00", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-lun-2", d(0), "12:00", 120, "cli-catalina-saez", "man-luminary-elaborado", "Semi en manos elaboradas"),
+    appt("seed-lun-3", d(0), "14:00", 120, "cli-mami", "man-gelx-sencillo", "Gel X"),
+    appt("seed-lun-4", d(0), "16:00", 120, "cli-mari-muniz", "man-luminary-basico", "Luminary"),
+    // Martes — feriado
+    appt("seed-mar-feriado", d(1), "09:00", 480, "cli-interno", "int-feriado", "Día de la Independencia"),
+    // Miércoles
+    appt("seed-mie-1", d(2), "09:00", 120, "cli-daniela-reyes", "man-builder-basico", "Builder"),
+    appt("seed-mie-2", d(2), "10:00", 90, "cli-mariel-calvo", "man-builder-basico"),
+    appt("seed-mie-almuerzo", d(2), "11:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-mie-3", d(2), "13:00", 90, "cli-jimena-ovideo", "man-gelx-sencillo", "Gel X Sencillo"),
+    // Jueves
+    appt("seed-jue-1", d(3), "09:30", 120, "cli-cristina-solano", "man-luminary-basico", "Luminary"),
+    appt("seed-jue-almuerzo", d(3), "11:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-jue-2", d(3), "15:30", 120, "cli-alessia-carvajal", "man-gelx-sencillo", "Gel X"),
+    appt("seed-jue-3", d(3), "17:00", 60, "cli-elena-murillo", "ped-esmaltado", "Pedicure"),
+    // Viernes: sin citas
+    // Sábado
+    appt("seed-sab-1", d(5), "09:00", 120, "cli-valeria-garcia", "man-luminary-basico", "Luminary"),
+    appt("seed-sab-2", d(5), "11:00", 90, "cli-majo-salinas", "man-gelx-sencillo", "Semi en manos"),
+    appt("seed-sab-almuerzo", d(5), "12:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-sab-3", d(5), "13:30", 90, "cli-winny-ramirez", "ped-jelly", "Pedi - Jelly Spa"),
+    // Domingo
+    appt("seed-dom-1", d(6), "09:00", 120, "cli-fransey-duran", "man-gelx-sencillo", "Gel X + Semi en pies"),
+    appt("seed-dom-2", d(6), "11:00", 150, "cli-nicole-araya", "man-luminary-basico", "Luminary básico + Retiro + Semi en pies"),
+    appt("seed-dom-almuerzo", d(6), "13:30", 60, "cli-interno", "int-almuerzo"),
   ];
 }
 

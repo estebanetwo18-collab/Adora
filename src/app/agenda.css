@@ -1,79 +1,85 @@
 .adora-agenda{
-  --bg:#FBF3EF;
+  --bg:#FBF3F0;
   --surface:#FFFFFF;
-  --surface-alt:#FCF6F3;
-  --ink:#2E1712;
-  --ink-soft:#8A6961;
-  --ink-faint:#C2A79F;
-  --brand-brown:#3D2420;
-  --brand-brown-dark:#2B1512;
-  --brand-pink:#F6D6E8;
-  --accent:#C1527A;
+  --surface-alt:#FCF4F2;
+  --ink:#3B2621;
+  --ink-soft:#7C5952;
+  --ink-faint:#B79E96;
+  --brand-brown:#3B2621;
+  --brand-brown-dark:#2A1B17;
+  --brand-pink:#F9D6E3;
+  --accent:#C98999;
   --accent-ink:#FFFFFF;
-  --accent-soft:#F3D9E4;
-  --line:#ECDBD3;
-  --grid-line:#F1E3DC;
-  --grid-line-strong:#E6D0C6;
-  --shadow:0 10px 28px -10px rgba(61,36,32,0.22);
-  --today-tint:#FCEDE9;
+  --accent-soft:#F3E1E6;
+  --line:#EAD3D8;
+  --grid-line:#F1E1E4;
+  --grid-line-strong:#E3C7CC;
+  --shadow:0 10px 28px -10px rgba(59,38,33,0.2);
+  --today-tint:#FBEEF1;
   --danger:#B3402E;
   --good:#3F8F5F;
 
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:var(--font-manrope),-apple-system,'Segoe UI',system-ui,sans-serif;
+  font-family:var(--font-montserrat),-apple-system,'Segoe UI',system-ui,sans-serif;
+  font-weight:400;
   font-variant-numeric:tabular-nums;
   padding:20px 16px 48px;
 }
 @media (prefers-color-scheme: dark){
   .adora-agenda:not([data-theme="light"]){
-    --bg:#1B100D;
-    --surface:#241613;
-    --surface-alt:#1F1310;
-    --ink:#F3E6E0;
-    --ink-soft:#C9A89F;
-    --ink-faint:#7E5E56;
-    --brand-brown:#170D0B;
-    --brand-brown-dark:#0F0807;
-    --brand-pink:#F3C6DC;
-    --accent:#E68CB0;
-    --accent-ink:#2B1512;
-    --accent-soft:#3A2430;
-    --line:#3A2621;
-    --grid-line:#2C1C18;
-    --grid-line-strong:#3C2820;
-    --shadow:0 10px 28px -10px rgba(0,0,0,0.55);
-    --today-tint:#2A1815;
-    --danger:#E07A63;
+    --bg:#170F0D;
+    --surface:#241715;
+    --surface-alt:#1F1512;
+    --ink:#F3E3E6;
+    --ink-soft:#CBA9A0;
+    --ink-faint:#8A6960;
+    --brand-brown:#140C0A;
+    --brand-brown-dark:#0D0807;
+    --brand-pink:#F9D6E3;
+    --accent:#D99CAB;
+    --accent-ink:#2A1418;
+    --accent-soft:#3A2428;
+    --line:#3D2925;
+    --grid-line:#2C1C19;
+    --grid-line-strong:#3C2621;
+    --shadow:0 10px 28px -10px rgba(0,0,0,.6);
+    --today-tint:#2A1B17;
+    --danger:#E0806B;
     --good:#7BC79A;
   }
 }
 .adora-agenda[data-theme="dark"]{
-  --bg:#1B100D;
-  --surface:#241613;
-  --surface-alt:#1F1310;
-  --ink:#F3E6E0;
-  --ink-soft:#C9A89F;
-  --ink-faint:#7E5E56;
-  --brand-brown:#170D0B;
-  --brand-brown-dark:#0F0807;
-  --brand-pink:#F3C6DC;
-  --accent:#E68CB0;
-  --accent-ink:#2B1512;
-  --accent-soft:#3A2430;
-  --line:#3A2621;
-  --grid-line:#2C1C18;
-  --grid-line-strong:#3C2820;
-  --shadow:0 10px 28px -10px rgba(0,0,0,0.55);
-  --today-tint:#2A1815;
-  --danger:#E07A63;
+  --bg:#170F0D;
+  --surface:#241715;
+  --surface-alt:#1F1512;
+  --ink:#F3E3E6;
+  --ink-soft:#CBA9A0;
+  --ink-faint:#8A6960;
+  --brand-brown:#140C0A;
+  --brand-brown-dark:#0D0807;
+  --brand-pink:#F9D6E3;
+  --accent:#D99CAB;
+  --accent-ink:#2A1418;
+  --accent-soft:#3A2428;
+  --line:#3D2925;
+  --grid-line:#2C1C19;
+  --grid-line-strong:#3C2621;
+  --shadow:0 10px 28px -10px rgba(0,0,0,.6);
+  --today-tint:#2A1B17;
+  --danger:#E0806B;
   --good:#7BC79A;
 }
 
 .adora-agenda, .adora-agenda *{box-sizing:border-box;}
 .adora-agenda h1, .adora-agenda h2, .adora-agenda h3{
-  font-family:var(--font-fraunces),Georgia,'Times New Roman',serif; margin:0;
+  font-family:var(--font-bodoni),Georgia,'Times New Roman',serif; font-weight:600; margin:0;
+}
+.adora-agenda .num-accent{font-family:var(--font-lilita),var(--font-montserrat),sans-serif; font-weight:400;}
+.adora-agenda .label-sm{
+  font-family:var(--font-quicksand),var(--font-montserrat),sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.08em;
 }
 
 .adora-agenda .app{max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:16px;}
@@ -82,40 +88,38 @@
 .adora-agenda .topbar{
   background:var(--brand-brown);
   border-radius:18px;
-  padding:14px 20px;
+  padding:12px 20px;
   display:flex; align-items:center; gap:18px; flex-wrap:wrap;
   box-shadow:var(--shadow);
 }
 .adora-agenda .brand{display:flex; align-items:center; gap:10px; margin-right:auto;}
-.adora-agenda .brand-mark{
-  width:38px; height:38px; border-radius:50%;
-  background:var(--brand-brown-dark);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--font-fraunces),serif; font-style:italic; font-weight:600;
-  color:var(--brand-pink); font-size:20px; flex:none;
+.adora-agenda .brand-logo{height:40px; width:auto; display:block; flex:none;}
+.adora-agenda .brand-tagline{
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--brand-pink); opacity:.75;
 }
-.adora-agenda .brand-text{display:flex; flex-direction:column; line-height:1.1;}
-.adora-agenda .brand-text .name{font-family:var(--font-fraunces),serif; font-style:italic; font-weight:600; font-size:20px; color:var(--brand-pink);}
-.adora-agenda .brand-text .sub{font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--brand-pink); opacity:.72;}
 
 .adora-agenda .nav-group{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
 .adora-agenda .icon-btn{
-  width:32px; height:32px; border-radius:9px; border:1px solid rgba(246,214,232,.28);
-  background:rgba(246,214,232,.08); color:var(--brand-pink);
+  width:32px; height:32px; border-radius:9px; border:1px solid rgba(249,214,227,.28);
+  background:rgba(249,214,227,.08); color:var(--brand-pink);
   display:flex; align-items:center; justify-content:center; cursor:pointer;
   font-size:15px; line-height:1;
 }
-.adora-agenda .icon-btn:hover{background:rgba(246,214,232,.18);}
+.adora-agenda .icon-btn:hover{background:rgba(249,214,227,.18);}
 .adora-agenda .today-btn{
-  border:1px solid rgba(246,214,232,.28); background:transparent; color:var(--brand-pink);
-  border-radius:9px; padding:7px 13px; font-family:var(--font-manrope),sans-serif; font-weight:600;
-  font-size:13px; cursor:pointer;
+  border:1px solid rgba(249,214,227,.28); background:transparent; color:var(--brand-pink);
+  border-radius:9px; padding:7px 13px; font-family:var(--font-quicksand),sans-serif; font-weight:700;
+  font-size:12.5px; cursor:pointer;
 }
-.adora-agenda .today-btn:hover{background:rgba(246,214,232,.1);}
-.adora-agenda .range-label{color:var(--brand-pink); font-weight:700; font-size:15px; min-width:168px;}
+.adora-agenda .today-btn:hover{background:rgba(249,214,227,.1);}
+.adora-agenda .range-label{
+  font-family:var(--font-quicksand),sans-serif; color:var(--brand-pink); font-weight:700; font-size:14px; min-width:168px;
+}
 .adora-agenda .sync-pill{
-  display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:var(--brand-pink); opacity:.85;
-  padding:5px 10px; border-radius:20px; background:rgba(246,214,232,.08);
+  display:flex; align-items:center; gap:6px; font-family:var(--font-quicksand),sans-serif;
+  font-size:10.5px; font-weight:700; color:var(--brand-pink); opacity:.85;
+  padding:5px 10px; border-radius:20px; background:rgba(249,214,227,.08);
 }
 .adora-agenda .sync-dot{width:6px; height:6px; border-radius:50%; background:var(--good); flex:none;}
 .adora-agenda .sync-pill.offline .sync-dot{background:var(--danger);}
@@ -129,10 +133,10 @@
 }
 .adora-agenda .banner.show{display:flex;}
 
-.adora-agenda .view-tabs{display:flex; gap:4px; background:rgba(246,214,232,.08); padding:3px; border-radius:10px;}
+.adora-agenda .view-tabs{display:flex; gap:4px; background:rgba(249,214,227,.08); padding:3px; border-radius:10px;}
 .adora-agenda .view-tab{
   border:none; background:transparent; color:var(--brand-pink); opacity:.68;
-  font-family:var(--font-manrope),sans-serif; font-weight:600; font-size:12.5px;
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:12px;
   padding:7px 13px; border-radius:8px; cursor:pointer;
 }
 .adora-agenda .view-tab.active{background:var(--brand-pink); color:var(--brand-brown-dark); opacity:1;}
@@ -145,12 +149,12 @@
   background:var(--surface); border:1px solid var(--line); border-radius:16px;
   box-shadow:var(--shadow); padding:14px 16px 16px;
 }
-.adora-agenda .card h3{font-size:14px; font-style:italic; font-weight:600; margin-bottom:10px;}
+.adora-agenda .card h3{font-size:15px; font-style:italic; font-weight:600; margin-bottom:10px;}
 
 .adora-agenda .new-appt-btn{
   display:flex; align-items:center; justify-content:center; gap:8px;
   background:var(--accent); color:var(--accent-ink); border:none; border-radius:13px;
-  padding:13px 16px; font-family:var(--font-manrope),sans-serif; font-weight:700; font-size:14px;
+  padding:13px 16px; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:14px;
   cursor:pointer; box-shadow:var(--shadow);
 }
 .adora-agenda .new-appt-btn:hover{filter:brightness(1.06);}
@@ -161,37 +165,53 @@
 .adora-agenda .mini-cal-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;}
 .adora-agenda .mini-cal-head h3{margin-bottom:0;}
 .adora-agenda .mini-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:3px; text-align:center;}
-.adora-agenda .mini-dow{font-size:10px; color:var(--ink-faint); font-weight:700; padding-bottom:4px;}
+.adora-agenda .mini-dow{
+  font-family:var(--font-quicksand),sans-serif; font-size:10px; color:var(--ink-faint); font-weight:700; padding-bottom:4px;
+}
 .adora-agenda .mini-day{
   position:relative; aspect-ratio:1; display:flex; align-items:center; justify-content:center;
-  border-radius:8px; font-size:11.5px; color:var(--ink-soft);
+  border-radius:8px; font-family:var(--font-lilita),sans-serif; font-size:13px; color:var(--ink-soft);
 }
 .adora-agenda .mini-day.out{color:var(--ink-faint); opacity:.55;}
 .adora-agenda .mini-day.has-appt::after{
   content:""; position:absolute; bottom:3px; width:4px; height:4px; border-radius:50%; background:var(--accent);
 }
-.adora-agenda .mini-day.today{background:var(--accent); color:var(--accent-ink); font-weight:800;}
+.adora-agenda .mini-day.today{background:var(--accent); color:var(--accent-ink);}
 .adora-agenda .mini-day.today.has-appt::after{background:var(--accent-ink);}
 
 .adora-agenda .legend-row{display:flex; align-items:center; gap:9px; padding:5px 0; font-size:12.5px; color:var(--ink-soft);}
 .adora-agenda .legend-dot{width:9px; height:9px; border-radius:50%; flex:none;}
 
+.adora-agenda .service-category-label{
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-faint); padding:6px 6px 3px;
+}
+.adora-agenda .service-row-text{display:flex; flex-direction:column; gap:1px; min-width:0;}
+.adora-agenda .service-price{font-size:11px; color:var(--ink-faint); font-variant-numeric:tabular-nums;}
+
 .adora-agenda .list-row-btn{
   width:100%; display:flex; align-items:center; gap:9px; padding:6px 6px; margin:0 -6px;
   font-size:12.5px; color:var(--ink-soft); background:none; border:none; border-radius:8px;
-  cursor:pointer; text-align:left; font-family:var(--font-manrope),sans-serif;
+  cursor:pointer; text-align:left; font-family:var(--font-montserrat),sans-serif;
 }
 .adora-agenda .list-row-btn:hover{background:var(--surface-alt); color:var(--ink);}
 .adora-agenda .row-title{font-weight:600; color:var(--ink);}
-.adora-agenda .row-sub{color:var(--ink-faint); font-size:11px;}
+.adora-agenda .row-sub{
+  font-family:var(--font-quicksand),sans-serif; color:var(--ink-faint); font-size:11px; font-weight:600;
+}
 .adora-agenda .avatar{
   width:22px; height:22px; border-radius:50%; flex:none;
   display:flex; align-items:center; justify-content:center;
   background:var(--accent-soft); color:var(--accent); font-weight:800; font-size:10px;
+  overflow:hidden;
+}
+.adora-agenda .avatar-photo{object-fit:cover;}
+.adora-agenda .staff-photo-preview{
+  margin-top:8px; width:56px; height:56px; border-radius:50%; object-fit:cover; border:1px solid var(--line);
 }
 .adora-agenda .add-row-btn{
   width:100%; margin-top:4px; background:none; border:1px dashed var(--line); color:var(--ink-soft);
-  border-radius:9px; padding:8px; font-family:var(--font-manrope),sans-serif; font-weight:700; font-size:12px; cursor:pointer;
+  border-radius:9px; padding:8px; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:12px; cursor:pointer;
 }
 .adora-agenda .add-row-btn:hover{background:var(--surface-alt); color:var(--ink);}
 .adora-agenda .add-row-btn:disabled{opacity:.5; cursor:not-allowed;}
@@ -203,14 +223,17 @@
   background:var(--surface); border:1px solid var(--line); border-radius:16px;
   box-shadow:var(--shadow); overflow-x:auto;
 }
-.adora-agenda .grid-inner{min-width:640px;}
+.adora-agenda .grid-inner{min-width:760px;}
 .adora-agenda .day-header-row{
-  display:grid; grid-template-columns:52px repeat(6,1fr);
+  display:grid; grid-template-columns:52px repeat(7,1fr);
   border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--surface); z-index:2;
 }
 .adora-agenda .day-header{padding:10px 6px; text-align:center; border-left:1px solid var(--grid-line);}
-.adora-agenda .day-header .dow{font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); font-weight:700;}
-.adora-agenda .day-header .num{font-family:var(--font-fraunces),serif; font-weight:600; font-size:19px; margin-top:2px;}
+.adora-agenda .day-header .dow{
+  font-family:var(--font-quicksand),sans-serif; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-faint); font-weight:700;
+}
+.adora-agenda .day-header .num{font-family:var(--font-lilita),sans-serif; font-size:20px; margin-top:2px;}
 .adora-agenda .day-header.is-today{background:var(--today-tint);}
 .adora-agenda .day-header.is-today .dow{color:var(--accent);}
 .adora-agenda .day-header.is-today .num{
@@ -218,9 +241,12 @@
   width:28px; height:28px; border-radius:50%; background:var(--accent); color:var(--accent-ink);
 }
 
-.adora-agenda .grid-body{display:grid; grid-template-columns:52px repeat(6,1fr);}
+.adora-agenda .grid-body{display:grid; grid-template-columns:52px repeat(7,1fr);}
 .adora-agenda .time-col{display:flex; flex-direction:column;}
-.adora-agenda .time-label{height:64px; position:relative; font-size:10.5px; color:var(--ink-faint); text-align:right; padding-right:8px;}
+.adora-agenda .time-label{
+  height:64px; position:relative; font-family:var(--font-quicksand),sans-serif; font-size:10px;
+  color:var(--ink-faint); text-align:right; padding-right:8px;
+}
 .adora-agenda .time-label span{position:relative; top:-6px;}
 
 .adora-agenda .day-col{
@@ -239,7 +265,7 @@
 
 .adora-agenda .empty-state{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  font-size:12px; color:var(--ink-faint); font-style:italic; font-family:var(--font-fraunces),serif;
+  font-size:12px; color:var(--ink-faint); font-style:italic; font-family:var(--font-bodoni),serif;
   padding:0 10px; text-align:center;
 }
 
@@ -252,7 +278,9 @@
 .adora-agenda .appt:hover{box-shadow:0 4px 14px -4px rgba(0,0,0,.3); transform:translateY(-1px); z-index:4;}
 .adora-agenda .appt .client{font-size:12px; font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .adora-agenda .appt .service{font-size:10.5px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.adora-agenda .appt .time{font-size:9.5px; color:var(--ink-faint); white-space:nowrap;}
+.adora-agenda .appt .time{
+  font-family:var(--font-quicksand),sans-serif; font-size:9.5px; color:var(--ink-faint); white-space:nowrap;
+}
 .adora-agenda .appt.short .service, .adora-agenda .appt.short .time{display:none;}
 
 /* ---------- Modal ---------- */
@@ -265,12 +293,15 @@
   background:var(--surface); border-radius:18px; width:100%; max-width:400px; box-shadow:var(--shadow);
   padding:22px; border:1px solid var(--line); max-height:88vh; overflow-y:auto;
 }
-.adora-agenda .modal h2{font-size:21px; font-style:italic; font-weight:600; margin-bottom:4px;}
+.adora-agenda .modal h2{font-size:22px; font-style:italic; font-weight:600; margin-bottom:4px;}
 .adora-agenda .modal .hint{font-size:12.5px; color:var(--ink-soft); margin-bottom:16px;}
 .adora-agenda .field{display:flex; flex-direction:column; gap:5px; margin-bottom:13px;}
-.adora-agenda .field label{font-size:11.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;}
+.adora-agenda .field label{
+  font-family:var(--font-quicksand),sans-serif; font-size:11px; font-weight:700; color:var(--ink-soft);
+  text-transform:uppercase; letter-spacing:.06em;
+}
 .adora-agenda .field input, .adora-agenda .field select, .adora-agenda .field textarea{
-  font-family:var(--font-manrope),sans-serif; font-size:13.5px; color:var(--ink);
+  font-family:var(--font-montserrat),sans-serif; font-size:13.5px; color:var(--ink);
   background:var(--surface-alt); border:1px solid var(--line); border-radius:9px; padding:9px 10px;
 }
 .adora-agenda .field textarea{resize:vertical; min-height:56px;}
@@ -282,17 +313,17 @@
 .adora-agenda .modal-actions{display:flex; gap:8px; margin-top:18px; flex-wrap:wrap;}
 .adora-agenda .btn-ghost{
   flex:1; background:transparent; border:1px solid var(--line); color:var(--ink-soft);
-  border-radius:10px; padding:11px; font-family:var(--font-manrope),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border-radius:10px; padding:11px; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
 }
 .adora-agenda .btn-primary{
   flex:1; background:var(--accent); border:none; color:var(--accent-ink);
-  border-radius:10px; padding:11px; font-family:var(--font-manrope),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border-radius:10px; padding:11px; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
 }
 .adora-agenda .btn-primary:hover{filter:brightness(1.06);}
 .adora-agenda .btn-primary:disabled, .adora-agenda .btn-ghost:disabled, .adora-agenda .btn-danger:disabled{opacity:.55; cursor:not-allowed;}
 .adora-agenda .btn-danger{
   flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger);
-  border-radius:10px; padding:11px; font-family:var(--font-manrope),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border-radius:10px; padding:11px; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:13px; cursor:pointer;
 }
 .adora-agenda .btn-danger:hover{background:color-mix(in srgb, var(--danger) 12%, transparent);}
 
@@ -304,7 +335,7 @@
 }
 .adora-agenda .client-picker-item{
   width:100%; text-align:left; background:none; border:none; padding:8px 10px; cursor:pointer;
-  font-family:var(--font-manrope),sans-serif; font-size:13px; color:var(--ink);
+  font-family:var(--font-montserrat),sans-serif; font-size:13px; color:var(--ink);
   display:flex; flex-direction:column; gap:1px;
 }
 .adora-agenda .client-picker-item:hover{background:var(--surface-alt);}
@@ -318,6 +349,7 @@
 .adora-agenda .client-chip .sub{font-size:11px; color:var(--ink-faint);}
 .adora-agenda .client-chip button{
   background:none; border:none; color:var(--accent); font-weight:700; font-size:12px; cursor:pointer; padding:4px 6px;
+  font-family:var(--font-quicksand),sans-serif;
 }
 
 .adora-agenda .toast{
@@ -329,30 +361,67 @@
 
 .adora-agenda .loading-state{
   display:flex; align-items:center; justify-content:center; min-height:320px;
-  color:var(--ink-soft); font-style:italic; font-family:var(--font-fraunces),serif; font-size:15px;
+  color:var(--ink-soft); font-style:italic; font-family:var(--font-bodoni),serif; font-size:16px;
 }
 
 .adora-agenda .login-page{
   min-height:calc(100vh - 68px); display:flex; align-items:center; justify-content:center; padding:24px 0;
 }
 .adora-agenda .login-card{width:100%; max-width:360px;}
-.adora-agenda .login-brand{display:flex; flex-direction:column; align-items:center; gap:6px; margin-bottom:20px;}
-.adora-agenda .login-brand .brand-mark{width:52px; height:52px; font-size:26px;}
-.adora-agenda .login-brand .name{font-size:26px;}
+.adora-agenda .login-brand{display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:20px;}
+.adora-agenda .login-logo{height:76px; width:auto; border-radius:14px;}
 .adora-agenda .login-error{
   background:var(--accent-soft); color:var(--danger); border-radius:9px; padding:9px 12px;
   font-size:12.5px; margin-bottom:13px;
 }
 .adora-agenda .logout-btn{
-  border:1px solid rgba(246,214,232,.28); background:transparent; color:var(--brand-pink);
-  border-radius:9px; padding:7px 13px; font-family:var(--font-manrope),sans-serif; font-weight:600;
-  font-size:12.5px; cursor:pointer;
+  border:1px solid rgba(249,214,227,.28); background:transparent; color:var(--brand-pink);
+  border-radius:9px; padding:7px 13px; font-family:var(--font-quicksand),sans-serif; font-weight:700;
+  font-size:11.5px; cursor:pointer;
 }
-.adora-agenda .logout-btn:hover{background:rgba(246,214,232,.1);}
+.adora-agenda .logout-btn:hover{background:rgba(249,214,227,.1);}
 
 @media (max-width:760px){
-  .adora-agenda .body{flex-direction:column;}
-  .adora-agenda .sidebar{width:100%; flex-direction:row; flex-wrap:wrap;}
-  .adora-agenda .sidebar .card{flex:1; min-width:150px;}
-  .adora-agenda .range-label{min-width:0;}
+  .adora-agenda{padding:14px 10px 40px;}
+  .adora-agenda .app{gap:12px;}
+  .adora-agenda .body{flex-direction:column; gap:12px;}
+  .adora-agenda .sidebar{width:100%; flex-direction:column; gap:12px;}
+  .adora-agenda .sidebar .card{flex:none; width:100%; min-width:0;}
+  .adora-agenda .card{padding:13px 14px 15px;}
+
+  .adora-agenda .topbar{padding:10px 12px; gap:8px 10px;}
+  .adora-agenda .brand{flex:1 1 100%; margin-right:0;}
+  .adora-agenda .brand-logo{height:34px;}
+  .adora-agenda .nav-group{flex:1 1 100%; justify-content:space-between; gap:6px;}
+  .adora-agenda .range-label{flex:1; min-width:0; text-align:center; font-size:12.5px;}
+  .adora-agenda .view-tabs{order:1;}
+  .adora-agenda .sync-pill{order:2; margin-left:auto;}
+  .adora-agenda .logout-btn{order:3;}
+  .adora-agenda .icon-btn{width:36px; height:36px; flex:none;}
+
+  /* Menos ancho mínimo en la grilla: cabe más en pantalla sin perder legibilidad. */
+  .adora-agenda .grid-inner{min-width:560px;}
+  .adora-agenda .day-header-row, .adora-agenda .grid-body{grid-template-columns:40px repeat(7,1fr);}
+  .adora-agenda .time-label{font-size:9px; padding-right:4px;}
+  .adora-agenda .day-header{padding:8px 2px;}
+  .adora-agenda .day-header .dow{font-size:9px;}
+  .adora-agenda .day-header .num{font-size:16px;}
+  .adora-agenda .appt .client{font-size:11px;}
+  .adora-agenda .appt .service{font-size:9.5px;}
+
+  .adora-agenda .overlay{padding:14px;}
+  .adora-agenda .modal{padding:18px; border-radius:14px;}
+}
+
+@media (max-width:480px){
+  .adora-agenda{padding:10px 8px 32px;}
+  .adora-agenda .brand-tagline{display:none;}
+  .adora-agenda .sync-pill span:last-child{display:none;}
+  .adora-agenda .sync-pill{padding:5px 8px;}
+  .adora-agenda .today-btn{padding:6px 10px; font-size:11.5px;}
+  .adora-agenda .view-tab{padding:6px 9px; font-size:11px;}
+  .adora-agenda .logout-btn{padding:6px 9px; font-size:10.5px;}
+  .adora-agenda .modal h2{font-size:19px;}
+  .adora-agenda .modal-actions{flex-direction:column;}
+  .adora-agenda .modal-actions .btn-ghost, .adora-agenda .modal-actions .btn-primary, .adora-agenda .modal-actions .btn-danger{flex:none; width:100%;}
 }
