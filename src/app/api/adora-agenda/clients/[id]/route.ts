@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getState, setState } from "@/lib/adora-agenda/store";
 import { clientInputSchema } from "@/lib/adora-agenda/schemas";
-import { errorResponse, readJson } from "@/lib/adora-agenda/api-helpers";
+import { errorResponse, readJson, getSession, toClientState } from "@/lib/adora-agenda/api-helpers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,17 +19,20 @@ export async function PATCH(request: Request, { params }: Params) {
         { status: 422 },
       );
     }
+    const session = await getSession();
     const state = await getState();
     if (!state.clients.some((c) => c.id === id)) {
-      return NextResponse.json({ ok: false, code: "not_found", message: "Clienta no encontrada." }, { status: 404 });
+      return NextResponse.json({ ok: false, code: "not_found", message: "Contacto no encontrado." }, { status: 404 });
     }
     const now = new Date().toISOString();
     const nextState = {
       ...state,
-      clients: state.clients.map((c) => (c.id === id ? { ...c, ...parsed.data, updatedAt: now } : c)),
+      clients: state.clients.map((c) =>
+        c.id === id ? { ...c, ...parsed.data, updatedAt: now, updatedBy: session?.sub || "" } : c,
+      ),
     };
     await setState(nextState);
-    return NextResponse.json({ ok: true, state: nextState });
+    return NextResponse.json({ ok: true, state: toClientState(nextState, session) });
   } catch (err) {
     return errorResponse(err);
   }
@@ -38,10 +41,11 @@ export async function PATCH(request: Request, { params }: Params) {
 export async function DELETE(_request: Request, { params }: Params) {
   try {
     const { id } = await params;
+    const session = await getSession();
     const state = await getState();
     const nextState = { ...state, clients: state.clients.filter((c) => c.id !== id) };
     await setState(nextState);
-    return NextResponse.json({ ok: true, state: nextState });
+    return NextResponse.json({ ok: true, state: toClientState(nextState, session) });
   } catch (err) {
     return errorResponse(err);
   }

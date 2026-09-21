@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getState, setState } from "@/lib/adora-agenda/store";
 import { appointmentInputSchema } from "@/lib/adora-agenda/schemas";
-import { errorResponse, readJson } from "@/lib/adora-agenda/api-helpers";
+import { errorResponse, readJson, getSession, toClientState } from "@/lib/adora-agenda/api-helpers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,6 +19,7 @@ export async function PATCH(request: Request, { params }: Params) {
         { status: 422 },
       );
     }
+    const session = await getSession();
     const state = await getState();
     if (!state.appointments.some((a) => a.id === id)) {
       return NextResponse.json({ ok: false, code: "not_found", message: "Cita no encontrada." }, { status: 404 });
@@ -31,7 +32,7 @@ export async function PATCH(request: Request, { params }: Params) {
       appointments: state.appointments.map((a) => (a.id === id ? { id, ...parsed.data } : a)),
     };
     await setState(nextState);
-    return NextResponse.json({ ok: true, state: nextState });
+    return NextResponse.json({ ok: true, state: toClientState(nextState, session) });
   } catch (err) {
     return errorResponse(err);
   }
@@ -40,10 +41,11 @@ export async function PATCH(request: Request, { params }: Params) {
 export async function DELETE(_request: Request, { params }: Params) {
   try {
     const { id } = await params;
+    const session = await getSession();
     const state = await getState();
     const nextState = { ...state, appointments: state.appointments.filter((a) => a.id !== id) };
     await setState(nextState);
-    return NextResponse.json({ ok: true, state: nextState });
+    return NextResponse.json({ ok: true, state: toClientState(nextState, session) });
   } catch (err) {
     return errorResponse(err);
   }

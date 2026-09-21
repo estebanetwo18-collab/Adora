@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getState, setState, genId } from "@/lib/adora-agenda/store";
 import { staffInputSchema } from "@/lib/adora-agenda/schemas";
-import { errorResponse, readJson } from "@/lib/adora-agenda/api-helpers";
+import { errorResponse, readJson, getSession, toClientState } from "@/lib/adora-agenda/api-helpers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,12 +16,13 @@ export async function POST(request: Request) {
         { status: 422 },
       );
     }
+    const session = await getSession();
     const state = await getState();
     const initials = (parsed.data.initials || parsed.data.name.slice(0, 2)).toUpperCase();
     const member = { id: genId("staff"), ...parsed.data, initials };
     const nextState = { ...state, staff: [...state.staff, member] };
     await setState(nextState);
-    return NextResponse.json({ ok: true, state: nextState, member });
+    return NextResponse.json({ ok: true, state: toClientState(nextState, session), member });
   } catch (err) {
     return errorResponse(err);
   }

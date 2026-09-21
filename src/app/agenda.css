@@ -425,3 +425,190 @@
   .adora-agenda .modal-actions{flex-direction:column;}
   .adora-agenda .modal-actions .btn-ghost, .adora-agenda .modal-actions .btn-primary, .adora-agenda .modal-actions .btn-danger{flex:none; width:100%;}
 }
+
+/* ==================== CRM shell (sidebar + modules) ==================== */
+
+.adora-agenda .crm-shell{display:flex; min-height:100vh; align-items:stretch;}
+.adora-agenda .crm-sidebar{
+  width:220px; flex:none; background:var(--brand-brown); color:var(--brand-pink);
+  display:flex; flex-direction:column; padding:18px 14px; gap:18px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.adora-agenda .crm-sidebar-brand{display:flex; align-items:center; gap:10px;}
+.adora-agenda .crm-sidebar-brand .brand-logo{height:38px; border-radius:9px;}
+.adora-agenda .crm-sidebar-brand-text{display:flex; flex-direction:column;}
+.adora-agenda .crm-sidebar-title{font-family:var(--font-bodoni),serif; font-style:italic; font-weight:600; font-size:17px; color:var(--brand-pink);}
+
+.adora-agenda .crm-nav{display:flex; flex-direction:column; gap:3px;}
+.adora-agenda .crm-nav-link{
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:13.5px;
+  color:var(--brand-pink); opacity:.72; text-decoration:none;
+  padding:10px 12px; border-radius:10px; transition:background .12s ease, opacity .12s ease;
+}
+.adora-agenda .crm-nav-link:hover{opacity:1; background:rgba(249,214,227,.08);}
+.adora-agenda .crm-nav-link.active{opacity:1; background:var(--accent); color:var(--accent-ink);}
+
+.adora-agenda .crm-sidebar-footer{margin-top:auto; display:flex; flex-direction:column; gap:10px;}
+.adora-agenda .crm-current-user{display:flex; flex-direction:column; padding:0 12px;}
+.adora-agenda .crm-current-user .row-title{color:var(--brand-pink);}
+.adora-agenda .crm-current-user .row-sub{color:var(--brand-pink); opacity:.65;}
+.adora-agenda .crm-sidebar-footer .logout-btn{width:100%;}
+
+.adora-agenda .crm-main{flex:1; min-width:0; padding:24px 28px 48px;}
+
+.adora-agenda .page-head{margin-bottom:18px;}
+.adora-agenda .page-head h1{font-size:26px; font-style:italic;}
+.adora-agenda .page-sub{font-size:13px; color:var(--ink-soft); margin-top:4px;}
+
+/* ---------- Dashboard ---------- */
+.adora-agenda .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:16px;}
+.adora-agenda .stat-card{display:flex; flex-direction:column; gap:4px;}
+.adora-agenda .stat-label{
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:11px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+.adora-agenda .stat-value{font-family:var(--font-lilita),sans-serif; font-size:30px; color:var(--ink);}
+.adora-agenda .stat-foot{font-size:11.5px; color:var(--ink-soft);}
+
+.adora-agenda .dash-columns{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; align-items:start;}
+.adora-agenda .dash-columns .card{height:100%;}
+
+.adora-agenda .pipeline-bars{display:flex; flex-direction:column; gap:8px;}
+.adora-agenda .pipeline-bar-row{
+  display:flex; align-items:center; gap:10px; text-decoration:none; padding:2px 0;
+}
+.adora-agenda .pipeline-bar-track{flex:1; height:8px; border-radius:5px; background:var(--surface-alt); overflow:hidden;}
+.adora-agenda .pipeline-bar-fill{height:100%; border-radius:5px; transition:width .2s ease;}
+
+.adora-agenda .timeline-row{display:flex; align-items:flex-start; gap:10px; padding:7px 0;}
+.adora-agenda .timeline-icon{font-size:15px; line-height:1.4; flex:none;}
+
+/* ---------- Filters / tables shared by Contactos & Actividades ---------- */
+.adora-agenda .filters-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+.adora-agenda .field-search{
+  flex:1; min-width:180px; font-family:var(--font-montserrat),sans-serif; font-size:13px; color:var(--ink);
+  background:var(--surface-alt); border:1px solid var(--line); border-radius:9px; padding:9px 12px;
+}
+.adora-agenda .field-search:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+.adora-agenda .seg-tabs{display:flex; gap:4px; background:var(--surface-alt); padding:3px; border-radius:10px; flex-wrap:wrap;}
+.adora-agenda .seg-tab{
+  border:none; background:transparent; color:var(--ink-soft);
+  font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:12px;
+  padding:7px 13px; border-radius:8px; cursor:pointer;
+}
+.adora-agenda .seg-tab.active{background:var(--accent); color:var(--accent-ink);}
+.adora-agenda .seg-tab:not(.active):hover{background:var(--line);}
+
+.adora-agenda .table-scroll{overflow-x:auto;}
+.adora-agenda .data-table{width:100%; border-collapse:collapse; font-size:13px;}
+.adora-agenda .data-table th{
+  text-align:left; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:10.5px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); padding:8px 10px; border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+.adora-agenda .data-table td{padding:10px; border-bottom:1px solid var(--grid-line); color:var(--ink-soft); vertical-align:middle;}
+.adora-agenda .data-row{cursor:pointer;}
+.adora-agenda .data-row:hover{background:var(--surface-alt);}
+
+.adora-agenda .badge{
+  display:inline-block; font-family:var(--font-quicksand),sans-serif; font-weight:700; font-size:10.5px;
+  padding:4px 9px; border-radius:20px; text-transform:capitalize; cursor:default;
+}
+.adora-agenda .badge-prospecto{background:var(--accent-soft); color:var(--accent);}
+.adora-agenda .badge-cliente{background:color-mix(in srgb, var(--good) 18%, transparent); color:var(--good);}
+.adora-agenda .badge-inactivo{background:var(--surface-alt); color:var(--ink-faint);}
+.adora-agenda .badge-prio-baja{background:var(--surface-alt); color:var(--ink-soft);}
+.adora-agenda .badge-prio-media{background:color-mix(in srgb, #D9C25B 22%, transparent); color:#8A7220;}
+.adora-agenda .badge-prio-alta{background:color-mix(in srgb, var(--danger) 16%, transparent); color:var(--danger);}
+.adora-agenda .badge-task-pendiente{background:var(--surface-alt); color:var(--ink-soft);}
+.adora-agenda .badge-task-en_progreso{background:color-mix(in srgb, var(--accent) 20%, transparent); color:var(--accent);}
+.adora-agenda .badge-task-completada{background:color-mix(in srgb, var(--good) 18%, transparent); color:var(--good);}
+
+.adora-agenda .tag-row{display:flex; flex-wrap:wrap; gap:5px;}
+.adora-agenda .tag-chip{
+  display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--ink-soft);
+  background:var(--surface-alt); border:1px solid var(--line); border-radius:20px; padding:3px 9px;
+}
+.adora-agenda .tag-chip.removable button{
+  border:none; background:none; color:var(--ink-faint); font-size:13px; line-height:1; cursor:pointer; padding:0;
+}
+.adora-agenda .tag-chip.removable button:hover{color:var(--danger);}
+
+.adora-agenda .inline-activity-form{display:flex; gap:6px; margin-bottom:10px;}
+.adora-agenda .inline-activity-form select{
+  font-family:var(--font-montserrat),sans-serif; font-size:12.5px; color:var(--ink); background:var(--surface-alt);
+  border:1px solid var(--line); border-radius:8px; padding:7px 8px; flex:none; max-width:110px;
+}
+.adora-agenda .inline-activity-form input{
+  flex:1; font-family:var(--font-montserrat),sans-serif; font-size:12.5px; color:var(--ink); background:var(--surface-alt);
+  border:1px solid var(--line); border-radius:8px; padding:7px 10px; min-width:0;
+}
+.adora-agenda .inline-activity-form .btn-primary{flex:none; padding:7px 14px;}
+
+/* ---------- Drawer (side panel — Contactos detail) ---------- */
+.adora-agenda .drawer-overlay{
+  position:fixed; inset:0; background:rgba(23,13,11,.45); z-index:30;
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+  display:flex; justify-content:flex-end;
+}
+.adora-agenda .drawer-overlay.open{opacity:1; pointer-events:auto;}
+.adora-agenda .drawer{
+  width:420px; max-width:100%; height:100%; background:var(--surface); box-shadow:var(--shadow);
+  padding:20px; overflow-y:auto; transform:translateX(12px); transition:transform .15s ease;
+}
+.adora-agenda .drawer-overlay.open .drawer{transform:translateX(0);}
+.adora-agenda .drawer-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:12px;}
+.adora-agenda .drawer-head h2{font-size:20px; font-style:italic; margin-bottom:6px;}
+.adora-agenda .drawer-actions{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.adora-agenda .drawer-actions button{flex:1; min-width:100px;}
+.adora-agenda .drawer-section{padding:14px 0; border-top:1px solid var(--line);}
+.adora-agenda .drawer-section:first-of-type{border-top:none; padding-top:0;}
+.adora-agenda .drawer-section h3{font-size:14px; font-style:italic; margin-bottom:8px;}
+
+/* ---------- Kanban (Oportunidades) ---------- */
+.adora-agenda .kanban-scroll{overflow-x:auto; padding-bottom:8px;}
+.adora-agenda .kanban-board{display:flex; gap:14px; align-items:flex-start; min-width:min-content;}
+.adora-agenda .kanban-column{
+  width:230px; flex:none; background:var(--surface-alt); border:1px solid var(--line); border-radius:14px; padding:10px;
+}
+.adora-agenda .kanban-column-head{display:flex; flex-direction:column; gap:1px; padding:4px 6px 10px;}
+.adora-agenda .kanban-cards{display:flex; flex-direction:column; gap:8px; min-height:40px;}
+.adora-agenda .kanban-card{
+  display:flex; flex-direction:column; gap:3px; background:var(--surface); border:1px solid var(--line);
+  border-radius:11px; padding:10px 11px; cursor:grab; box-shadow:var(--shadow);
+}
+.adora-agenda .kanban-card:active{cursor:grabbing;}
+.adora-agenda .kanban-card:hover{border-color:var(--grid-line-strong);}
+
+/* ---------- Configuración ---------- */
+.adora-agenda .config-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:16px; align-items:start;}
+.adora-agenda .config-grid .card:first-child{grid-row:1 / span 2;}
+
+@media (max-width:900px){
+  .adora-agenda .dash-columns{grid-template-columns:1fr;}
+  .adora-agenda .config-grid{grid-template-columns:1fr;}
+  .adora-agenda .config-grid .card:first-child{grid-row:auto;}
+}
+
+@media (max-width:760px){
+  .adora-agenda .crm-shell{flex-direction:column; min-height:0;}
+  .adora-agenda .crm-sidebar{
+    width:100%; height:auto; position:sticky; top:0; z-index:10; flex-direction:row; align-items:center;
+    padding:10px 12px; gap:12px; overflow-x:auto;
+  }
+  .adora-agenda .crm-sidebar-brand .brand-logo{height:30px;}
+  .adora-agenda .crm-sidebar-title{display:none;}
+  .adora-agenda .crm-nav{flex-direction:row; gap:2px;}
+  .adora-agenda .crm-nav-link{padding:8px 10px; font-size:12px; white-space:nowrap;}
+  .adora-agenda .crm-sidebar-footer{margin-top:0; margin-left:auto; flex-direction:row; align-items:center; gap:8px;}
+  .adora-agenda .crm-current-user{display:none;}
+  .adora-agenda .crm-sidebar-footer .logout-btn{width:auto; white-space:nowrap;}
+
+  .adora-agenda .crm-main{padding:16px 12px 36px;}
+  .adora-agenda .page-head h1{font-size:22px;}
+  .adora-agenda .dash-columns{gap:12px;}
+  .adora-agenda .drawer{width:100%;}
+  .adora-agenda .filters-row{flex-direction:column; align-items:stretch;}
+  .adora-agenda .filters-row .new-appt-btn{margin-left:0 !important;}
+}

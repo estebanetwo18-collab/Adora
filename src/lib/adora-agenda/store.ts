@@ -1,24 +1,51 @@
 import { Redis } from "@upstash/redis";
-import type { AgendaState, Client, Appointment, StaffMember, ServiceType } from "./types";
+import { hashPassword } from "./auth";
+import { INTERNAL_CLIENT_ID } from "./types";
+import type {
+  AgendaState,
+  Client,
+  Appointment,
+  StaffMember,
+  ServiceType,
+  Opportunity,
+  Activity,
+  CrmTask,
+  CrmUser,
+  CrmSettings,
+} from "./types";
 
 const STATE_KEY = "adora-agenda:state:v1";
+export { INTERNAL_CLIENT_ID };
 
 export function genId(prefix: string): string {
   return `${prefix}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function client(
-  id: string,
-  name: string,
-  phone: string,
-  notes = "",
-): Client {
+function client(id: string, name: string, phone: string, notes = ""): Client {
   const now = new Date().toISOString();
-  return { id, name, phone, email: "", notes, createdAt: now, updatedAt: now };
+  return {
+    id,
+    name,
+    phone,
+    email: "",
+    notes,
+    company: "",
+    location: "",
+    source: "",
+    status: "cliente",
+    tags: [],
+    ownerId: "",
+    createdAt: now,
+    updatedAt: now,
+    createdBy: "",
+    updatedBy: "",
+  };
 }
 
 // Clientas reales de la semana (de la agenda de Google Calendar de Adora).
-// Sin teléfono/notas inventados — se completan desde la agenda real.
+// Sin teléfono/notas inventados — se completan desde la agenda real. Todas
+// arrancan como "cliente" (ya tienen citas reales) y sin responsable
+// asignado — eso se define desde Contactos.
 const SEED_CLIENTS: Client[] = [
   client("cli-karina-guadamuz", "Karina Guadamuz", ""),
   client("cli-catalina-saez", "Catalina Saez", ""),
@@ -36,7 +63,11 @@ const SEED_CLIENTS: Client[] = [
   client("cli-fransey-duran", "Fransey Duran", ""),
   client("cli-nicole-araya", "Nicole Araya", ""),
   // No es una clienta: representa horarios bloqueados (almuerzo, feriados).
-  client("cli-interno", "— Bloqueo interno —", ""),
+  { ...client(INTERNAL_CLIENT_ID, "— Bloqueo interno —", ""), status: "inactivo" },
+  // Contacto de ejemplo, claramente marcado como demo — para que el pipeline
+  // de Oportunidades y la línea de tiempo de Actividades no se vean vacíos
+  // antes de cargar datos reales. Fácil de borrar desde Contactos.
+  { ...client("cli-demo-prospecto", "[DEMO] Prospecto de ejemplo", "8888-0000"), status: "prospecto", source: "Instagram", tags: ["Nuevo"] },
 ];
 
 // Precios y servicios reales de Adora (guía visual de marca). Un color por
@@ -101,7 +132,7 @@ function appt(
   service: string,
   notes = "",
 ): Appointment {
-  return { id, date, time, duration, clientId, service, notes };
+  return { id, date, time, duration, clientId, service, notes, opportunityId: "" };
 }
 
 // Semana real tomada de la agenda de Google Calendar de Adora. "Almuerzo" y
@@ -116,32 +147,32 @@ function seedAppointmentsForWeek(mondayIso: string): Appointment[] {
   return [
     // Lunes
     appt("seed-lun-1", d(0), "09:00", 120, "cli-karina-guadamuz", "man-gelx-sencillo", "Gel X + retiro"),
-    appt("seed-lun-almuerzo", d(0), "11:00", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-lun-almuerzo", d(0), "11:00", 60, INTERNAL_CLIENT_ID, "int-almuerzo"),
     appt("seed-lun-2", d(0), "12:00", 120, "cli-catalina-saez", "man-luminary-elaborado", "Semi en manos elaboradas"),
     appt("seed-lun-3", d(0), "14:00", 120, "cli-mami", "man-gelx-sencillo", "Gel X"),
     appt("seed-lun-4", d(0), "16:00", 120, "cli-mari-muniz", "man-luminary-basico", "Luminary"),
     // Martes — feriado
-    appt("seed-mar-feriado", d(1), "09:00", 480, "cli-interno", "int-feriado", "Día de la Independencia"),
+    appt("seed-mar-feriado", d(1), "09:00", 480, INTERNAL_CLIENT_ID, "int-feriado", "Día de la Independencia"),
     // Miércoles
     appt("seed-mie-1", d(2), "09:00", 120, "cli-daniela-reyes", "man-builder-basico", "Builder"),
     appt("seed-mie-2", d(2), "10:00", 90, "cli-mariel-calvo", "man-builder-basico"),
-    appt("seed-mie-almuerzo", d(2), "11:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-mie-almuerzo", d(2), "11:30", 60, INTERNAL_CLIENT_ID, "int-almuerzo"),
     appt("seed-mie-3", d(2), "13:00", 90, "cli-jimena-ovideo", "man-gelx-sencillo", "Gel X Sencillo"),
     // Jueves
     appt("seed-jue-1", d(3), "09:30", 120, "cli-cristina-solano", "man-luminary-basico", "Luminary"),
-    appt("seed-jue-almuerzo", d(3), "11:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-jue-almuerzo", d(3), "11:30", 60, INTERNAL_CLIENT_ID, "int-almuerzo"),
     appt("seed-jue-2", d(3), "15:30", 120, "cli-alessia-carvajal", "man-gelx-sencillo", "Gel X"),
     appt("seed-jue-3", d(3), "17:00", 60, "cli-elena-murillo", "ped-esmaltado", "Pedicure"),
     // Viernes: sin citas
     // Sábado
     appt("seed-sab-1", d(5), "09:00", 120, "cli-valeria-garcia", "man-luminary-basico", "Luminary"),
     appt("seed-sab-2", d(5), "11:00", 90, "cli-majo-salinas", "man-gelx-sencillo", "Semi en manos"),
-    appt("seed-sab-almuerzo", d(5), "12:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-sab-almuerzo", d(5), "12:30", 60, INTERNAL_CLIENT_ID, "int-almuerzo"),
     appt("seed-sab-3", d(5), "13:30", 90, "cli-winny-ramirez", "ped-jelly", "Pedi - Jelly Spa"),
     // Domingo
     appt("seed-dom-1", d(6), "09:00", 120, "cli-fransey-duran", "man-gelx-sencillo", "Gel X + Semi en pies"),
     appt("seed-dom-2", d(6), "11:00", 150, "cli-nicole-araya", "man-luminary-basico", "Luminary básico + Retiro + Semi en pies"),
-    appt("seed-dom-almuerzo", d(6), "13:30", 60, "cli-interno", "int-almuerzo"),
+    appt("seed-dom-almuerzo", d(6), "13:30", 60, INTERNAL_CLIENT_ID, "int-almuerzo"),
   ];
 }
 
@@ -156,12 +187,170 @@ function mondayOfCurrentWeekIso(): string {
   return `${y}-${m}-${d}`;
 }
 
-function buildSeedState(): AgendaState {
+// ---------- CRM: pipeline / tags / tipos (editables desde Configuración) ----------
+
+export const DEFAULT_SETTINGS: CrmSettings = {
+  pipelineStages: [
+    { id: "nuevo", label: "Nuevo", isWon: false, isLost: false },
+    { id: "contactado", label: "Contactado", isWon: false, isLost: false },
+    { id: "calificado", label: "Calificado", isWon: false, isLost: false },
+    { id: "propuesta", label: "Propuesta", isWon: false, isLost: false },
+    { id: "negociacion", label: "Negociación", isWon: false, isLost: false },
+    { id: "ganado", label: "Ganado", isWon: true, isLost: false },
+    { id: "perdido", label: "Perdido", isWon: false, isLost: true },
+  ],
+  tags: ["VIP", "Frecuente", "Nuevo", "Instagram", "Referido"],
+  activityTypes: [
+    { id: "llamada", label: "Llamada" },
+    { id: "reunion", label: "Reunión" },
+    { id: "correo", label: "Correo" },
+    { id: "mensaje", label: "Mensaje" },
+    { id: "nota", label: "Nota" },
+  ],
+  taskPriorities: [
+    { id: "baja", label: "Baja" },
+    { id: "media", label: "Media" },
+    { id: "alta", label: "Alta" },
+  ],
+};
+
+// Oportunidad, actividad y tarea de ejemplo — todas colgando del contacto
+// demo de arriba, nunca de una clienta real, para no inventar información
+// comercial sobre personas reales. Bórralas cuando cargues datos reales.
+function buildDemoOpportunities(): Opportunity[] {
+  const now = new Date().toISOString();
+  return [
+    {
+      id: "opp-demo-1",
+      title: "[DEMO] Paquete mensual de manicure",
+      contactId: "cli-demo-prospecto",
+      ownerId: "",
+      stage: "contactado",
+      value: 60000,
+      closeDate: "",
+      probability: 40,
+      lossReason: "",
+      notes: "Ejemplo de oportunidad — edítala o bórrala.",
+      createdAt: now,
+      updatedAt: now,
+      createdBy: "",
+      updatedBy: "",
+    },
+  ];
+}
+function buildDemoActivities(): Activity[] {
+  const now = new Date().toISOString();
+  return [
+    {
+      id: "act-demo-1",
+      type: "mensaje",
+      contactId: "cli-demo-prospecto",
+      opportunityId: "opp-demo-1",
+      subject: "[DEMO] Escribió por Instagram preguntando precios",
+      notes: "Ejemplo de actividad — edítala o bórrala.",
+      ownerId: "",
+      createdAt: now,
+      createdBy: "",
+    },
+  ];
+}
+function buildDemoTasks(): CrmTask[] {
+  const now = new Date().toISOString();
+  return [
+    {
+      id: "task-demo-1",
+      title: "[DEMO] Llamar para confirmar interés",
+      contactId: "cli-demo-prospecto",
+      opportunityId: "opp-demo-1",
+      assigneeId: "",
+      priority: "media",
+      dueDate: "",
+      status: "pendiente",
+      notes: "Ejemplo de tarea — edítala o bórrala.",
+      createdAt: now,
+      updatedAt: now,
+      createdBy: "",
+      updatedBy: "",
+    },
+  ];
+}
+
+// Cuentas de ejemplo para el equipo — mismos nombres que en Personal, para
+// que cada quien tenga usuario propio desde el primer día. Contraseña demo
+// compartida: cámbienla desde Configuración → Usuarios apenas entren.
+const DEMO_USER_PASSWORD = "Adora2026!";
+async function buildSeedUsers(): Promise<CrmUser[]> {
+  const now = new Date().toISOString();
+  const hash = await hashPassword(DEMO_USER_PASSWORD);
+  return [
+    { id: "usr-paula", name: "Paula", username: "paula", passwordHash: hash, role: "supervisor", active: true, createdAt: now },
+    { id: "usr-camila", name: "Camila", username: "camila", passwordHash: hash, role: "comercial", active: true, createdAt: now },
+    { id: "usr-rocio", name: "Rocio", username: "rocio", passwordHash: hash, role: "comercial", active: true, createdAt: now },
+  ];
+}
+
+async function buildSeedState(): Promise<AgendaState> {
   return {
     clients: SEED_CLIENTS,
     appointments: seedAppointmentsForWeek(mondayOfCurrentWeekIso()),
     staff: SEED_STAFF,
     services: SEED_SERVICES,
+    opportunities: buildDemoOpportunities(),
+    activities: buildDemoActivities(),
+    tasks: buildDemoTasks(),
+    users: await buildSeedUsers(),
+    settings: DEFAULT_SETTINGS,
+  };
+}
+
+// Todo estado leído de Redis pasa por acá — así una base ya sembrada con el
+// esquema viejo (solo agenda, sin CRM) se completa con arreglos y campos
+// nuevos en vez de romper cualquier página que espere que existan.
+function normalizeState(raw: Partial<AgendaState> | null | undefined): AgendaState {
+  const clients: Client[] = (raw?.clients || []).map((c) => ({
+    id: c.id,
+    name: c.name,
+    phone: c.phone,
+    email: c.email,
+    notes: c.notes,
+    company: c.company ?? "",
+    location: c.location ?? "",
+    source: c.source ?? "",
+    status: c.status ?? "cliente",
+    tags: c.tags ?? [],
+    ownerId: c.ownerId ?? "",
+    createdAt: c.createdAt,
+    updatedAt: c.updatedAt,
+    createdBy: c.createdBy ?? "",
+    updatedBy: c.updatedBy ?? "",
+  }));
+  const appointments: Appointment[] = (raw?.appointments || []).map((a) => ({
+    id: a.id,
+    date: a.date,
+    time: a.time,
+    duration: a.duration,
+    clientId: a.clientId,
+    service: a.service,
+    notes: a.notes,
+    opportunityId: a.opportunityId ?? "",
+  }));
+  return {
+    clients,
+    appointments,
+    staff: raw?.staff || [],
+    services: raw?.services || [],
+    opportunities: raw?.opportunities || [],
+    activities: raw?.activities || [],
+    tasks: raw?.tasks || [],
+    users: raw?.users || [],
+    settings: raw?.settings
+      ? {
+          pipelineStages: raw.settings.pipelineStages?.length ? raw.settings.pipelineStages : DEFAULT_SETTINGS.pipelineStages,
+          tags: raw.settings.tags || DEFAULT_SETTINGS.tags,
+          activityTypes: raw.settings.activityTypes?.length ? raw.settings.activityTypes : DEFAULT_SETTINGS.activityTypes,
+          taskPriorities: raw.settings.taskPriorities?.length ? raw.settings.taskPriorities : DEFAULT_SETTINGS.taskPriorities,
+        }
+      : DEFAULT_SETTINGS,
   };
 }
 
@@ -195,13 +384,13 @@ function getClient(): Redis {
 
 export async function getState(): Promise<AgendaState> {
   const redis = getClient();
-  const state = await redis.get<AgendaState>(STATE_KEY);
+  const state = await redis.get<Partial<AgendaState>>(STATE_KEY);
   if (!state) {
-    const seeded = buildSeedState();
+    const seeded = await buildSeedState();
     await redis.set(STATE_KEY, seeded);
     return seeded;
   }
-  return state;
+  return normalizeState(state);
 }
 
 export async function setState(state: AgendaState): Promise<void> {

@@ -478,11 +478,6 @@ export function AgendaApp() {
   return (
     <div className="app">
       <div className="topbar">
-        <div className="brand">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static brand asset served as-is from /public, no optimization needed */}
-          <img src="/logo-adora.jpg" alt="Adora Nail Salon" className="brand-logo" />
-          <span className="brand-tagline">Agenda</span>
-        </div>
         <div className="nav-group">
           <button className="today-btn" onClick={() => setWeekStart(mondayOf(new Date()))}>
             Hoy
@@ -508,15 +503,6 @@ export function AgendaApp() {
           <span className="sync-dot" />
           <span>{sync === "saving" ? "Guardando…" : sync === "error" ? "Sin conexión" : "Conectado"}</span>
         </div>
-        <button
-          className="logout-btn"
-          onClick={async () => {
-            await fetch("/api/auth/logout", { method: "POST" });
-            window.location.href = "/login";
-          }}
-        >
-          Cerrar sesión
-        </button>
       </div>
 
       <div className="body">
