@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Quicksand, Lilita_One, Montserrat } from "next/font/google";
+import { Bodoni_Moda, Quicksand, Lilita_One, Montserrat, Poppins, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./agenda.css";
 
@@ -32,6 +32,27 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+// Catálogo page only: Poppins for all body copy, Fraunces for titles — the
+// closest free match we could find for the client's reference title font
+// (a premium "beauty branding" display face not available on Google Fonts;
+// see the catalogo.css comment above the title rules).
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  axes: ["opsz", "SOFT", "WONK"],
+  style: ["normal", "italic"],
+  weight: "variable",
+  display: "swap",
+});
+
 // Vercel sets VERCEL_PROJECT_PRODUCTION_URL automatically; set
 // NEXT_PUBLIC_SITE_URL yourself once a custom domain is attached so social
 // previews (og:image, twitter:image) resolve to the right host.
@@ -54,7 +75,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`adora-agenda ${bodoniModa.variable} ${quicksand.variable} ${lilitaOne.variable} ${montserrat.variable}`}
+        className={`adora-agenda ${bodoniModa.variable} ${quicksand.variable} ${lilitaOne.variable} ${montserrat.variable} ${poppins.variable} ${fraunces.variable}`}
       >
         {children}
       </body>
