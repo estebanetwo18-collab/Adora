@@ -17,9 +17,11 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Everything except the login route itself and static assets (public/
-    // files, Next's own build assets) — a logged-out request for the logo
-    // or favicon must not get redirected to a login-page HTML response.
-    "/((?!login|api/auth/login|_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js)$).*)",
+    // Everything except the login route, the public marketing catalog
+    // (/catalogo — no login needed, it's meant to be shared and indexed),
+    // and static assets (public/ files, Next's own build assets) — a
+    // logged-out request for the logo or favicon must not get redirected
+    // to a login-page HTML response.
+    "/((?!login|catalogo|api/auth/login|_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js)$).*)",
   ],
 };

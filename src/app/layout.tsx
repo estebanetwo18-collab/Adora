@@ -32,7 +32,15 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+// Vercel sets VERCEL_PROJECT_PRODUCTION_URL automatically; set
+// NEXT_PUBLIC_SITE_URL yourself once a custom domain is attached so social
+// previews (og:image, twitter:image) resolve to the right host.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "CRM Adora",
     template: "%s — CRM Adora",
