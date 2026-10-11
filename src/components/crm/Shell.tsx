@@ -27,7 +27,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <aside className="crm-sidebar">
         <div className="crm-sidebar-brand">
           {/* eslint-disable-next-line @next/next/no-img-element -- static brand asset served as-is from /public */}
-          <img src="/logo-adora.jpg" alt="Adora Nail Salon" className="brand-logo" />
+          <img src="/logo-adora-white.png" alt="Adora Nail Salon" className="brand-logo" />
           <div className="crm-sidebar-brand-text">
             <span className="crm-sidebar-title">Adora</span>
             <span className="brand-tagline">CRM</span>

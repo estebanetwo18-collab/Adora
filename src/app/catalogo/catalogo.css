@@ -86,18 +86,15 @@
 /* ---------- category panels ---------- */
 .adora-catalog .category-panel{background:var(--brand-brown); color:var(--brand-pink); position:relative; scroll-margin-top:64px; margin:30px 0;}
 .adora-catalog .category-panel-inner{
-  max-width:var(--catalog-max); margin:0 auto; padding:44px 20px 56px;
-  display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:36px; align-items:start;
+  max-width:720px; margin:0 auto; padding:44px 20px 56px; text-align:center;
 }
-.adora-catalog .category-media{position:relative; border-radius:22px; overflow:hidden; box-shadow:var(--shadow); line-height:0;}
-.adora-catalog .category-media img{width:100%; height:auto; display:block;}
-.adora-catalog .category-head{margin-bottom:18px;}
+.adora-catalog .category-head{margin-bottom:22px;}
 .adora-catalog .category-head h2{
-  font-family:var(--font-fraunces),serif; font-style:italic; font-variation-settings:'SOFT' 100,'WONK' 1; font-size:clamp(24px,3vw,32px); margin:0 0 6px; color:var(--brand-pink);
+  font-family:var(--font-fraunces),serif; font-style:italic; font-variation-settings:'SOFT' 100,'WONK' 1; font-size:clamp(26px,3.4vw,36px); margin:0 0 8px; color:var(--brand-pink);
 }
-.adora-catalog .category-head p{font-family:var(--font-poppins),sans-serif; font-size:13.5px; color:var(--brand-pink); opacity:.78; margin:0;}
+.adora-catalog .category-head p{font-family:var(--font-poppins),sans-serif; font-size:14px; color:var(--brand-pink); opacity:.78; margin:0;}
 
-.adora-catalog .price-list{display:flex; flex-direction:column;}
+.adora-catalog .price-list{display:flex; flex-direction:column; text-align:left;}
 .adora-catalog .price-row{
   display:flex; align-items:baseline; justify-content:space-between; gap:14px;
   padding:13px 4px; margin:0 -4px; border-bottom:1px solid rgba(249,214,227,.16);
@@ -113,7 +110,7 @@
   font-family:var(--font-poppins),sans-serif; font-size:17px; color:var(--brand-pink); white-space:nowrap; flex:none;
 }
 
-.adora-catalog .category-cta{margin-top:24px;}
+.adora-catalog .category-cta{margin-top:26px;}
 
 /* ---------- duration table ---------- */
 .adora-catalog .duration-section{padding:52px 0;}
@@ -140,18 +137,14 @@
 
 /* ---------- coffee menu ---------- */
 .adora-catalog .coffee-section{background:var(--accent-soft); padding:4px 0 56px; position:relative; margin:30px 0;}
-.adora-catalog .coffee-inner{
-  max-width:var(--catalog-max); margin:0 auto; padding:44px 20px 0;
-  display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); gap:36px; align-items:start;
-}
-.adora-catalog .coffee-media{border-radius:22px; overflow:hidden; box-shadow:var(--shadow); line-height:0;}
-.adora-catalog .coffee-media img{width:100%; height:auto; display:block;}
-.adora-catalog .coffee-list-group{margin-bottom:18px;}
+.adora-catalog .coffee-inner{max-width:640px; margin:0 auto; padding:44px 20px 0; text-align:center;}
+.adora-catalog .coffee-photo{width:100%; max-width:280px; margin:0 auto 26px; border-radius:18px; box-shadow:var(--shadow); height:auto;}
+.adora-catalog .coffee-list-group{margin-bottom:18px; text-align:left;}
 .adora-catalog .coffee-list-label{
   font-family:var(--font-poppins),sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.08em;
   text-transform:uppercase; color:var(--accent); margin-bottom:8px;
 }
-.adora-catalog .coffee-list{display:flex; flex-wrap:wrap; gap:8px;}
+.adora-catalog .coffee-list{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
 .adora-catalog .coffee-list span{
   font-family:var(--font-poppins),sans-serif; font-size:13px; color:var(--ink); background:var(--surface);
   border:1px solid var(--line); border-radius:20px; padding:7px 14px;
@@ -203,17 +196,26 @@
 }
 .adora-catalog .hero .pending-note{color:var(--brand-pink); opacity:.6;}
 
-/* ---------- responsive ---------- */
-@media (max-width:860px){
-  .adora-catalog .category-panel-inner, .adora-catalog .coffee-inner{grid-template-columns:1fr;}
-  .adora-catalog .category-media, .adora-catalog .coffee-media{max-width:420px; margin:0 auto;}
+/* ---------- instagram ---------- */
+.adora-catalog .instagram-section{padding:12px 20px 52px; text-align:center;}
+.adora-catalog .ig-card{
+  max-width:420px; margin:0 auto; background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  padding:30px 26px; box-shadow:var(--shadow);
 }
+.adora-catalog .ig-icon{width:46px; height:46px; margin:0 auto 14px; color:var(--accent);}
+.adora-catalog .ig-card h3{
+  font-family:var(--font-fraunces),serif; font-style:italic; font-variation-settings:'SOFT' 100,'WONK' 1; font-size:22px; margin-bottom:6px;
+}
+.adora-catalog .ig-card p{font-family:var(--font-poppins),sans-serif; font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+.adora-catalog .ig-handle{font-weight:700; color:var(--accent);}
+.adora-catalog .whatsapp-btn.ghost.on-light{border-color:var(--line); color:var(--ink);}
 
+/* ---------- responsive ---------- */
 @media (max-width:600px){
   .adora-catalog .hero{padding-top:40px;}
   .adora-catalog .hero-inner{padding-bottom:48px;}
   .adora-catalog .hero-logo{height:68px;}
-  .adora-catalog .category-panel-inner{padding:34px 16px 44px; gap:26px;}
+  .adora-catalog .category-panel-inner{padding:34px 16px 44px;}
   .adora-catalog .coffee-inner{padding:34px 16px 0;}
   .adora-catalog .duration-section, .adora-catalog .info-section{padding:38px 0;}
   .adora-catalog .final-cta{padding:44px 0;}

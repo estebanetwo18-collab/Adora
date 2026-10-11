@@ -41,7 +41,7 @@ export function CatalogoPage() {
         <div className="catalog-nav-inner">
           <a href="#top" className="catalog-nav-brand">
             {/* eslint-disable-next-line @next/next/no-img-element -- tiny static nav icon, not worth next/image overhead */}
-            <img src="/logo-adora.jpg" alt="Adora Nail Salon" />
+            <img src="/logo-adora-white.png" alt="Adora Nail Salon" />
           </a>
           <div className="catalog-nav-links">
             {NAV_LINKS.map((link) => (
@@ -58,7 +58,7 @@ export function CatalogoPage() {
 
       <header className="hero" id="top">
         <div className="hero-inner container">
-          <Image src="/logo-adora.jpg" alt="Adora Nail Salon" width={168} height={168} className="hero-logo" priority />
+          <Image src="/logo-adora-white.png" alt="Adora Nail Salon" width={168} height={168} className="hero-logo" priority />
           <h1>La experiencia Adora</h1>
           <p className="hero-sub">
             Cejas, pestañas, manos y pies cuidados con calma y buen gusto — y un café pensado para acompañar cada
@@ -96,36 +96,31 @@ export function CatalogoPage() {
           <section className="category-panel" id={cat.id} key={cat.id} aria-labelledby={`${cat.id}-heading`}>
             <WaveDivider color="var(--bg)" />
             <div className="category-panel-inner">
-              <div className="category-media">
-                <Image src={cat.image.src} alt={cat.image.alt} width={900} height={1600} sizes="(max-width: 860px) 90vw, 340px" />
+              <div className="category-head">
+                <h2 id={`${cat.id}-heading`}>{cat.label}</h2>
+                <p>{cat.tagline}</p>
               </div>
-              <div>
-                <div className="category-head">
-                  <h2 id={`${cat.id}-heading`}>{cat.label}</h2>
-                  <p>{cat.tagline}</p>
-                </div>
-                <div className="price-list">
-                  {cat.services.map((s) => {
-                    const href = whatsappLink(whatsappMessageForService(s.name));
-                    const Row = href ? "a" : "div";
-                    return (
-                      <Row
-                        className="price-row"
-                        key={s.id}
-                        {...(href ? { href, target: "_blank", rel: "noopener noreferrer", title: `Reservar ${s.name} por WhatsApp` } : {})}
-                      >
-                        <div className="price-row-text">
-                          <span className="price-row-name">{s.name}</span>
-                          {s.note && <span className="price-row-note">{s.note}</span>}
-                        </div>
-                        <span className="price-row-price">{formatColones(s.price)}</span>
-                      </Row>
-                    );
-                  })}
-                </div>
-                <div className="category-cta">
-                  <WhatsAppCta message={whatsappMessageForCategory(cat.label)} label={`Consultar disponibilidad — ${cat.label}`} />
-                </div>
+              <div className="price-list">
+                {cat.services.map((s) => {
+                  const href = whatsappLink(whatsappMessageForService(s.name));
+                  const Row = href ? "a" : "div";
+                  return (
+                    <Row
+                      className="price-row"
+                      key={s.id}
+                      {...(href ? { href, target: "_blank", rel: "noopener noreferrer", title: `Reservar ${s.name} por WhatsApp` } : {})}
+                    >
+                      <div className="price-row-text">
+                        <span className="price-row-name">{s.name}</span>
+                        {s.note && <span className="price-row-note">{s.note}</span>}
+                      </div>
+                      <span className="price-row-price">{formatColones(s.price)}</span>
+                    </Row>
+                  );
+                })}
+              </div>
+              <div className="category-cta">
+                <WhatsAppCta message={whatsappMessageForCategory(cat.label)} label={`Consultar disponibilidad — ${cat.label}`} />
               </div>
             </div>
             <WaveDivider color="var(--bg)" flip />
@@ -170,43 +165,57 @@ export function CatalogoPage() {
         <section className="coffee-section" id="coffee">
           <WaveDivider color="var(--bg)" />
           <div className="coffee-inner">
-            <div className="coffee-media">
-              <Image
-                src="/catalogo/coffee-menu.jpg"
-                alt="Menú de café y snacks de Adora: café negro, capuchino, caramel latte, matchas, salteñas, galleta y Coca-Cola"
-                width={900}
-                height={1600}
-                sizes="(max-width: 860px) 90vw, 380px"
-              />
+            <Image
+              className="coffee-photo"
+              src="/catalogo/coffee-menu.jpg"
+              alt="Menú de café y snacks de Adora: café negro, capuchino, caramel latte, matchas, salteñas, galleta y Coca-Cola"
+              width={900}
+              height={1600}
+              sizes="(max-width: 600px) 90vw, 280px"
+            />
+            <div className="category-head">
+              <h2>Coffee menu</h2>
+              <p>Incluido en tu servicio — elegí tu bebida y snack favorito.</p>
             </div>
-            <div>
-              <div className="category-head">
-                <h2>Coffee menu</h2>
-                <p>Incluido en tu servicio — elegí tu bebida y snack favorito.</p>
+            <div className="coffee-list-group">
+              <div className="coffee-list-label">Bebidas</div>
+              <div className="coffee-list">
+                {COFFEE_DRINKS.map((d) => (
+                  <span key={d.id}>{d.name}</span>
+                ))}
               </div>
-              <div className="coffee-list-group">
-                <div className="coffee-list-label">Bebidas</div>
-                <div className="coffee-list">
-                  {COFFEE_DRINKS.map((d) => (
-                    <span key={d.id}>{d.name}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="coffee-list-group">
-                <div className="coffee-list-label">Snacks</div>
-                <div className="coffee-list">
-                  {COFFEE_SNACKS.map((s) => (
-                    <span key={s.id}>{s.name}</span>
-                  ))}
-                </div>
-              </div>
-              <p className="coffee-note">
-                &ldquo;Disfrutá tu cita como una experiencia pensada con amor. Elegí tu bebida y snack favorito,
-                incluido en tu servicio.&rdquo;
-              </p>
             </div>
+            <div className="coffee-list-group">
+              <div className="coffee-list-label">Snacks</div>
+              <div className="coffee-list">
+                {COFFEE_SNACKS.map((s) => (
+                  <span key={s.id}>{s.name}</span>
+                ))}
+              </div>
+            </div>
+            <p className="coffee-note">
+              &ldquo;Disfrutá tu cita como una experiencia pensada con amor. Elegí tu bebida y snack favorito,
+              incluido en tu servicio.&rdquo;
+            </p>
           </div>
           <WaveDivider color="var(--bg)" flip />
+        </section>
+
+        <section className="instagram-section container">
+          <div className="ig-card">
+            <svg className="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+              <circle cx="12" cy="12" r="4.3" />
+              <circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none" />
+            </svg>
+            <h3>Seguinos en Instagram</h3>
+            <p>
+              Más looks, resultados y disponibilidad — <span className="ig-handle">{INSTAGRAM_HANDLE}</span>
+            </p>
+            <a className="whatsapp-btn ghost on-light" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+              Ver perfil en Instagram
+            </a>
+          </div>
         </section>
 
         <section className="info-section container" id="info">
