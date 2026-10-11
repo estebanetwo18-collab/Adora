@@ -110,11 +110,8 @@ export const COFFEE_SNACKS: CoffeeItem[] = [
   { id: "coca-cola", name: "Coca-Cola" },
 ];
 
-// Set this once the business confirms a WhatsApp Business number (digits
-// only, country code included — e.g. "50688887777"). Every CTA on the page
-// falls back to a clearly-marked "pendiente de confirmar" state until then,
-// instead of linking to a guessed number.
-export const WHATSAPP_NUMBER = "";
+// Costa Rica country code (506) + the business's real WhatsApp number.
+export const WHATSAPP_NUMBER = "50672953736";
 export const PENDING_LABEL = "[PENDIENTE DE CONFIRMAR]";
 
 export function whatsappLink(message: string): string | null {
@@ -149,11 +146,14 @@ export type OperationalField = { label: string; value: string };
 // None of this was provided — every value is the literal placeholder the
 // brief asks for, not a guess. Fill these in from the real business info
 // before this page goes live.
+export const INSTAGRAM_URL = "https://www.instagram.com/adoranails.cr/";
+export const INSTAGRAM_HANDLE = "@adoranails.cr";
+
 export const OPERATIONAL_INFO: OperationalField[] = [
   { label: "Horarios", value: PENDING_LABEL },
   { label: "Ubicación", value: PENDING_LABEL },
-  { label: "WhatsApp", value: PENDING_LABEL },
-  { label: "Instagram", value: PENDING_LABEL },
+  { label: "WhatsApp", value: "+506 7295 3736" },
+  { label: "Instagram", value: INSTAGRAM_HANDLE },
   { label: "Métodos de pago", value: PENDING_LABEL },
   { label: "Política de cancelación", value: PENDING_LABEL },
   { label: "Tolerancia de llegada", value: PENDING_LABEL },

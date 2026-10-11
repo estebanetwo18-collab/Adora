@@ -9,6 +9,8 @@ import {
   OPERATIONAL_INFO,
   COMPLEXITY_LABEL,
   WHATSAPP_GENERAL_MESSAGE,
+  INSTAGRAM_URL,
+  INSTAGRAM_HANDLE,
   formatColones,
   formatDuration,
   whatsappLink,
@@ -229,7 +231,12 @@ export function CatalogoPage() {
           <div className="container">
             <h2>¿Lista para tu próxima cita?</h2>
             <p>Escribinos por WhatsApp y coordinamos el servicio, la fecha y la hora que mejor te acomode.</p>
-            <WhatsAppCta message={WHATSAPP_GENERAL_MESSAGE} label="Agendá tu cita por WhatsApp" />
+            <div className="final-cta-ctas">
+              <WhatsAppCta message={WHATSAPP_GENERAL_MESSAGE} label="Agendá tu cita por WhatsApp" />
+              <a className="whatsapp-btn ghost" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+                Seguinos en Instagram — {INSTAGRAM_HANDLE}
+              </a>
+            </div>
           </div>
         </section>
       </main>
